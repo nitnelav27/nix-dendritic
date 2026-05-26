@@ -6,6 +6,7 @@
       self.nixosModules.commonServices
       self.nixosModules.commonConfig
       self.nixosModules.nixosVmServices
+      self.nixosModules.nixosVmFirewall
     ];
 
     ## Set timezone
@@ -15,14 +16,9 @@
     i18n.defaultLocale = "en_US.UTF-8";
 
     ## System settings options unique in this host
-    nix.settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
+    nix.settings = { 
       cores = 1;
       max-jobs = 1;
-      auto-optimise-store = true;
     };
 
     ## Main user and main group
@@ -52,8 +48,13 @@
       };
     };
 
+    home-manager.users.vvh = self.homeModules.vvhNixosVm;
+
     ## Programs at system level
-    programs.zsh.enable = true;
+    programs = {
+      zsh.enable = true;
+      ssh.startAgent = true;
+    };
 
     ## Packages in System profile
     environment.systemPackages = with pkgs; [
