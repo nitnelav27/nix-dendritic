@@ -35,7 +35,7 @@
           uid = 1000;
           group = "vvh";
           homeMode = "764";
-          #shell = pkgs.zsh;
+          shell = pkgs.zsh;
           extraGroups = [
             "wheel"
             "networkmanager"
