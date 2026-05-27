@@ -14,7 +14,7 @@
   flake.homeModules.vvhNixosVm = { pkgs, ... }: {
     
     imports = [
-      #fdfsdfsdfs
+      self.homeModules.vvhShell
     ];
 
     home = {
