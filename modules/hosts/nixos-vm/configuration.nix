@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
 
-  flakes.nixosModules.nixosVmConfig = { pkgs, lib, ... }: {
+  flake.nixosModules.nixosVmConfig = { pkgs, lib, ... }: {
     imports = [
       self.nixosModules.nixosVmHardware
       self.nixosModules.commonServices
