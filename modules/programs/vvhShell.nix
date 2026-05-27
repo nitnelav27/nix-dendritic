@@ -1,10 +1,5 @@
-{ self, inputs, ... }:
-let
-zshDotDir = if pkgs.stdenv.isDarwin
-            then ".config/zsh"
-            else "${config.home.homeDirectory}/.config/zsh";
-in 
-{
+{ self, inputs, pkgs, config, ... }: {
+
     flake.homeModules.vvhShell = { config, lib, pkgs, ... }: {
     
     ## zsh as shell
