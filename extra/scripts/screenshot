@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#scrot -s ~/screenshots/$(date '+%y%m%d-%H%M').png
+hyprshot -o ~/screenshots -f $(date '+%y%m%d-%H%M').png -m region

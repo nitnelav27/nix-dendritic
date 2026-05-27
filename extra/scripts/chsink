@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Change the default audio sink. Should be invoked with a key combination
+
+
+defsink=$(pacmd list-sinks | grep "* index" | awk {'print $3'})
+sinkname=$(pactl list short sinks | grep "^$defsink" | awk {'print $2'})
+tmp1=$(pactl list short sinks | grep -v $sinkname | awk {'print $2'})
+options=($tmp1)
+
+arrsize=$(echo ${#options[@]})
+
+menu=()
+
+for i in $(seq 0 $(($arrsize - 1 )))
+do
+	if [[ ${options[$i]} = *"hdmi"* ]]; then
+		menu[$i]="Monitor"
+	elif [[ ${options[$i]} = *"analog"* ]]; then
+		menu[$i]="Headphones"
+	elif [[ ${options[$i]} = *"bluez"* ]]; then
+		menu[$i]="Bluetooth"
+	elif [[ ${options[$i]} = *"iec"* ]]; then
+		menu[$i]="Optical"
+	fi
+done
+
+
+choice=$(printf "%s\n" "${menu[@]}" | dmenu -fn "Fira Sans" -p "Select the new sound source")
+echo $newsink
+
+case $choice in
+	"Monitor") 	newsink=$(pactl list short sinks | grep -v $sinkname | awk {'print $2'} | grep "hdmi");;
+	"Headphones")	newsink=$(pactl list short sinks | grep -v $sinkname | awk {'print $2'}| grep "analog");;
+	"Bluetooth")	newsink=$(pactl list short sinks | grep -v $sinkname | awk {'print $2'} | grep "bluez");;
+	"Optical")	newsink=$(pactl list short sinks | grep -v $sinkname | awk {'print $2'} | grep "iec");;
+esac
+
+pactl set-default-sink $newsink
+kill -43 $(pidof dwmblocks)

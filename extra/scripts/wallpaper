@@ -1,0 +1,8 @@
+#!/bin/sh
+
+dir1="$HOME/pix/wp"
+dir2="$HOME/pix/wp2"
+img1=$(ls $dir1 | shuf -n 1)
+img2=$(ls $dir2 | shuf -n 1)
+
+feh --bg-fill --no-fehbg $dir1/$img1 $dir2/$img2

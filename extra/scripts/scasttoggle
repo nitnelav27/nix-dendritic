@@ -1,0 +1,9 @@
+#!/bin/sh
+
+thename=$(date "+%y%m%d-%H%M")
+#res=$(xrandr | grep \* | awk {'print $1'})
+
+(killall ffmpeg && notify-send "Stopped recording") || ffmpeg -thread_queue_size 600 -hwaccel cuda -f x11grab -framerate 60 -video_size 2560x1440 -i :0.0+440,0 -f pulse -i default -c:v h264_nvenc -c:a flac -crf 10 -r 60 -strict -2 ~/vids/$thename.mp4
+
+#### THIS IS A PROVISORY FUNCTION. i NEED TO REINSTALL EVERYTHING TO FIX NVIDIA ENCODERS
+#killall ffmpeg || ffmpeg -thread_queue_size 500 -f x11grab -video_size $res -i $DISPLAY -f pulse -thread_queue_size 100 -i default ~/vids/$thename.mp4

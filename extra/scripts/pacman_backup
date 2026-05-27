@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+
+sudo pacman -Qqtne > /home/vsvh/migration/arch/pacman_pkglist.txt
+sudo pacman -Qqtm > /home/vsvh/migration/arch/aur_pkglist.txt

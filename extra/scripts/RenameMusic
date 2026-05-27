@@ -1,0 +1,7 @@
+#!/run/current-system/sw/bin/bash
+
+NAME=$1
+
+shnsplit -f "$NAME.cue" -o flac -t "%n-%t" "$NAME.flac"
+#echo "$NAME.cue"
+#echo "$NAME.flac"

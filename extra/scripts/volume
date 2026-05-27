@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# This script gets the value and print it with an approprriate icon
+# Be careful with the icons, since they are color emojis.
+
+vol=$(pamixer --get-volume)
+
+if [ $vol -gt 80 ]; then
+	icon="🔊"
+elif [ $vol = 0 ]; then
+	icon="🔇"
+elif [ $vol -lt 35 ]; then
+	icon="🔈"
+else 
+	icon="🔉"
+fi
+
+([ $(pamixer --get-mute) = true ] && echo "🔇 $vol%" && exit) || echo "$icon $vol%"

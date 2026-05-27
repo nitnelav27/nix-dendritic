@@ -1,0 +1,16 @@
+#!/bin/sh
+
+
+# This first part gets the weather and stores it in a file
+getforecast() { curl -sf "wttr.in/manassas\?m" > "$HOME/.config/polybar/weatherreport" || exit 1 ;}
+
+# This is the function to print the weather report for the day
+showweather() { printf "%s" "$(sed '16q;d' "$HOME/.config/polybar/weatherreport" |
+	grep -wo "[0-9]*%" | sort -rn | sed "s/^/🌧 /g;1q" | tr -d '\n')"
+sed '13q;d' "$HOME/.config/polybar/weatherreport" | grep -o "m\\([-+]\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " 🥶 " $1 "°","🌞 " $2 "°"}' ;}
+
+# Test if the weather report is updated
+[ "$(stat -c %y "$HOME/.config/polybar/weatherreport" 2>/dev/null | cut -d' ' -f1)" = "$(date '+%Y-%m-%d')" ] ||
+	getforecast
+
+showweather

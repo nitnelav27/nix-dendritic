@@ -1,0 +1,12 @@
+#!/bin/bash
+
+name=$(/Users/vsvh/.CONFIG/scripts/alerter -reply "Type" -closeLabel "Quit" -title "Kill a process" -subtitle "by name" -message "You can use a partial title")
+
+if [ $name = "Quit" ] 
+then
+	exit 0
+else
+	num=$(ps -ax | grep "$name" | awk {'print $1'} | head -1)
+fi
+
+kill $num

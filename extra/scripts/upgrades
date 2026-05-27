@@ -1,0 +1,5 @@
+#!/bin/sh
+
+yay --answerclean All --answerdiff None --answeredit None --noconfirm -Syu
+doom -y upgrade
+DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus notify-send 'Your system was updated' 'Packages and Doom emacs'

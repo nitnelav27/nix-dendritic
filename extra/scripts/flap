@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# hsink=$(pactl list short sinks | grep "bluez" | awk {'print $2'})
+# pactl set-default-sink $hsink
+# kill -43 $(pidof dwmblocks)
+# mount -a
+alacritty -e ranger /.decreto

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+w="640"
+tw=$(xrandr | grep \* | awk {'print $1'} | sed "s/x.*//")
+nw=$(echo "$tw - $w" | bc -l)
+h="480"
+th=$(xrandr | grep \* | awk {'print $1'} | sed "s/.*x//")
+nh=$(echo "$th - $h" | bc -l)
+
+
+killall ffplay || ffplay -f avfoundation -framerate 30 -video_size "$w"x"$h" -noborder -alwaysontop -an -left $nw -top $nh -i 0
+

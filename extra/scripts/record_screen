@@ -1,0 +1,7 @@
+#!/bin/sh
+
+killall ffmpeg || (f=$(/Users/vsvh/.CONFIG/scripts/alerter -reply -message "Choose a filename" -title "Starting screen recorder" -closeLabel "Default")
+
+([ $f = "Default" ] && outfile=$(date "+%y%m%d-%H%M")) || outfile=$(echo $f)
+
+ffmpeg -loglevel quiet -f avfoundation -thread_queue_size 500 -framerate 60 -capture_cursor true -capture_mouse_clicks true -i 2:1 -c:v libx264 -c:a flac -crf 14 -preset veryfast ~/vids/$outfile.mkv)

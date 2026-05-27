@@ -1,0 +1,3 @@
+#!/bin/sh
+
+figlet $1 -t -f ~/.config/figlet_fonts/DOS\ Rebel.flf | lolcat

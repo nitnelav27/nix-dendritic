@@ -1,0 +1,3 @@
+#!/bin/sh
+
+open -j -a Terminal /Users/vsvh/.config/scripts/toggleftcam

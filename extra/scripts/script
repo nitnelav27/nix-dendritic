@@ -1,0 +1,5 @@
+#!/bin/sh
+
+thescript=$(ls /Users/vsvh/.config/scripts | grep -v alerter | grep -v record_screen | grep -v script | choose -f Hasklig -s 40 -b 006633)
+
+/Users/vsvh/.config/scripts/$thescript 

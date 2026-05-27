@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Outputs the audio source
+
+defsink=$(pacmd list-sinks | grep "* index" | awk {'print $3'})
+
+sinkname=$(pactl list short sinks | grep "^$defsink" | awk {'print $2'})
+
+if [[ $sinkname = *"hdmi"* ]]; then
+	icon="🖥 "
+elif [[ $sinkname = *"analog"* ]]; then
+	icon="🎧"
+else
+	icon=" "
+fi
+
+echo "Sound: $icon"

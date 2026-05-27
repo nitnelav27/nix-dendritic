@@ -1,0 +1,274 @@
+#+TITLE: Valentin's Emacs literal config
+#+AUTHOR: Valentín Vergara Hidd
+#+DESCRIPTION: This is my literal configuration file. It is written in Emacs' org mode.
+#+STARTUP: overview
+
+* General Information
+This is my emacs literate configuration. I will try to be as organized as I can, while also putting everything needed to make Emacs adjust to my workflow.
+
+All of this will be available in my [[https://github.com/nitnelav27][GitHub page]]. Feel free to take anything you need from here, since most of this is not original, but taken from different sources. If you have any suggestions/comments, please send me an [[mailto:valentinvergara@gmail.com][email]].
+
+To start, my personal information
+#+begin_src emacs-lisp
+(setq user-full-name "Valentin Vergara Hidd"
+      user-mail-address "valentinvergara@gmail.com")
+#+end_src
+* Basic Settings
+In this block I will put every global setting to change some behavior that I don't quite like about plain Emacs
+#+begin_src emacs-lisp
+(setq evil-want-fine-undo t
+      auto-save-default t)
+
+;(display-time 1)
+#+end_src
+
+* PDF Viewer
+Default pdf viewer for Linux
+#+begin_src emacs-lisp
+(setq +latex-viewers '(zathura))
+#+end_src
+* Aesthetics
+As the section title suggest, everything that controls how Emacs looks like should be here.
+#+begin_src emacs-lisp
+(delete-selection-mode 1)
+#+end_src
+** Splash Image
+Insert an image instead of the ASCII art used by default
+#+begin_src emacs-lisp
+(setq fancy-splash-image "~/.config/doom/smithers.png")
+#+end_src
+
+** Themes
+I will set a theme up, but also create a keybinding to easily change theme using =SPC H T=
+#+begin_src emacs-lisp
+(setq doom-theme 'doom-nord)
+(map! :leader
+      :desc "Load a new theme"
+      "h t" #'counsel-load-theme)
+#+end_src
+** Fonts
+There are five different font settings in doom Emacs. Here is a brief description of them
+- =doom-font= :: standard monospace used in everything
+- =doom-variable-pitch-font= :: this is not monospace and it has limited use.
+- =doom-big-font= :: for presentations
+- =font-lock-comment-face= :: as the name suggests
+- =font-lock-keyword-face= :: also a descriptive name
+
+#+begin_src emacs-lisp
+(if (eq system-type 'darwin)
+    (setq doom-font (font-spec :family "Hasklig" :size 20)
+      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 20)
+      doom-big-font (font-spec :family "Hasklig" :size 30))
+    (setq doom-font (font-spec :family "Hasklig" :size 23)
+          doom-variable-pitch-font (font-spec :family "Fira Sans" :size 23)
+          doom-big-font (font-spec :family "Hasklig" :size 35)
+          )
+    )
+
+(after! doom-themes
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t))
+
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic :weight bold))
+#+end_src
+
+#+RESULTS:
+
+** Beacon
+This package just makes your cursor seem to highlight whenever it changes position. If I find find annoying, I will just comment the following block
+#+begin_src emacs-lisp
+(use-package! beacon
+  :custom
+  (beacon-push-mark 10)
+  (beacon-color "#cc342b")
+  (beacon-blink-delay 0.3)
+  (beacon-blink-duration 0.3)
+  :config
+  (beacon-mode)
+  (global-hl-line-mode 1))
+#+end_src
+
+** Let's forget about /some/ ligatures
+#+begin_src emacs-lisp
+(plist-put!  +ligatures-extra-symbols
+             :int       "nil"
+             :float     "nil"
+             :in        "nil"
+             :for       "nil"
+             :not       "nil"
+             :and       "nil"
+             :or        "nil"
+             :return    "nil"
+             :yield     "nil"
+             )
+#+end_src
+* ORG mode
+The main reason to use Emacs.
+#+begin_src emacs-lisp
+(after! org
+  (setq org-ellipsis " ▼ "
+        org-hide-emphasis-markers t
+        org-agenda-files '(("~/.config/doom/agenda/agenda.org")
+                           ("~/.config/doom/agenda/weekly.org"))
+        org-log-done 'time
+        org-todo-keywords
+        '((sequence
+           "TODO(t)"
+           "READ(r)"
+           "TEACH(e)"
+           "MEETING(m)"
+           "|"
+           "DONE(d)"
+           ))))
+
+(if (eq system-type 'gnu/linux)
+    (after! org
+      (setq org-file-apps '((".pdf" . "zathura %s")))))
+(if (eq system-type 'darwin)
+    (after! org
+      (setq org-file-apps '((".pdf" . "Preview.app %o")))))
+#+end_src
+
+** Org-ref
+To this date, this is the best way that I know to use references in any type of document (from org, of course).
+#+begin_src emacs-lisp
+(use-package! org-ref
+  :after org
+  :init
+  (setq org-ref-default-bibliography '("~/.local/references/master.bib")
+        org-ref-bibliography-notes '("~/.local/references/notes.org")
+        reftex-default-bibliography  '("~/.local/references/master.bib")
+        bibtex-completion-bibliography '("~/.local/references/master.bib")
+        reftex-bibpath-environment-variables '("~/.local/references/master.bib")))
+        ;org-ref-completion-library 'org-ref-ivy-cite))
+
+(use-package! org-ref-bibtex
+  :after org-ref)
+
+(use-package! doi-utils
+  :after org-ref)
+
+(use-package! org-ref-arxiv
+  :after org-ref)
+
+(use-package! org-ref-isbn
+  :after org-ref)
+#+end_src
+Block ends here
+
+** LaTeX export
+The first block of code defines the default packages for LaTeX export from org-mode.
+#+begin_src emacs-lisp
+(setq org-latex-pdf-process '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                              "bibtex %b"
+                              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+
+(setq org-latex-default-packages-alist '(("utf8" "inputenc" t ("pdflatex"))
+                                         ("" "graphicx" t)
+                                         ("" "wrapfig" t)
+                                         ("" "rotating" t)
+                                         ("" "grffile" t)
+                                         ("normalem" "ulem" t)
+                                         ("" "amsmath" t)
+                                         ("" "amssymb" t)
+                                         ("" "capt-of" t)))
+#+end_src
+
+And this block of code loads some packages for every document exported to LaTeX
+#+begin_src emacs-lisp
+(setq org-latex-packages-alist '(("dvipsnames" "xcolor")
+                                 ("colorlinks=true,breaklinks=true,citecolor=cyan,urlcolor=blue" "hyperref")
+                                 ("" "natbib")
+                                 ("" "float")
+                                 ("" "ragged2e")
+                                 ("" "tabularx")
+                                 ("" "subcaption")
+                                 ("" "mdframed"))
+      )
+#+end_src
+** Listings in org
+By default, I will use the listings style for the class I'm teaching at GMU. It uses =listings= for syntax highlighting. In case I need to use the =minted= package with my defined style, I will uncomment the source code block below.
+#+begin_src emacs-lisp
+(setq org-latex-listings 'listings
+      org-latex-listings-options
+      '(("frame" "single")
+        ("backgroundcolor" "\\color{define}")
+        ("commentstyle" "\\color{codegreen}")
+        ("keywordstyle" "\\color{magenta}")
+        ("stringstyle" "\\color{codepurple}")
+        ("basicstyle" "\\linespread{0.9}\\fontsize{9}{12}\\selectfont\\ttfamily")
+        ("breakatwhitespace" "false")
+        ("breaklines" "true")
+        ("captionpos" "b")
+        ("keepspaces" "true")
+        ("numbers" "left")
+        ("numberstyle" "\\tiny\\color{gray}")
+        ("numbersep" "5pt")
+        ("showspaces" "false")
+        ("showstringspaces" "false")
+        ("showtabs" "false")
+        ("tabsize" "4")))
+#+end_src
+
+This is the source code block that should be uncommented to use =minted= listings
+#+begin_src
+(setq org-latex-listings 'minted
+      org-latex-minted-options
+      '(("frame" "lines")
+		  ;("fontsize" "\\scriptsize")
+		  ("numbers" "both")
+		  ("mathescape")
+		  ("breaklines" "true")
+		  ("breakanywhere" "true")
+		  ("style" "tango")))
+#+end_src
+And this finishes the subsection
+
+** Pretty math in org-mode
+As the subsection title suggest
+#+begin_src emacs-lisp
+(setq org-pretty-entities t)
+#+end_src
+
+** Org-Roam
+This is an org-mode implementation of the Zettelkasten Method (Luhmann). For now (Jan, 2021), I'm testing it for academic work.
+#+begin_src emacs-lisp
+(use-package! org-roam
+  :if (eq system-type 'darwin)
+  :init
+  (setq org-roam-directory "~/.local/references/roam"
+        org-roam-graph-executable "/usr/bin/dot")
+      )
+#+end_src
+Taking things a bit further, I will configure =org-roam-bibtex= to be able to work with my references
+#+begin_src emacs-lisp
+(setq orb-insert-interface 'helm-bibtex
+        orb-insert-link-description 'citekey
+        orb-autokey-format "%A%y"
+        orb-templates
+        '(("r" "ref" plain (function org-roam--capture-get-point) ""
+           :file-name "${citekey}"
+           :head "#+TITLE: ${citekey}: ${title}\n#+ROAM_KEY: ${ref}\n#+ALIAS:\n"
+           :unnarrowed t)))
+
+
+(use-package! org-roam-bibtex
+  :after (org-roam)
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :requires bibtex-completion)
+
+#+end_src
+
+* Terminal emulator in Emacs
+This configuration applies to my eshell interpreter. My goal here is to remain in Emacs while I do something quick in my terminal.
+#+end_src
+UPDATE: I think for now I will stick to =vterm=, which looks exactly like my usual terminal emulator
+#+begin_src emacs-lisp
+(map! :leader
+      :desc "open a vterm"
+      "t t" #'vterm)
+#+end_src

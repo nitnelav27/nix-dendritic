@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#open -n -a Alacritty /Users/vsvh/.config/scripts/record_screen
+
+open -n -a iTerm /Users/vsvh/.config/scripts/record_screen

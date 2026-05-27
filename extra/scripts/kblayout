@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# This detects the keyboard layout and prints it
+
+fetchly=$(setxkbmap -query | grep layout | awk {'print $2'})
+
+if [[ $fetchly = "us" ]]; then
+	icon="US"
+elif [[ $fetchly = "es" ]]; then
+	icon="ES"
+else
+	icon="other"
+fi
+
+echo "⌨: $icon"

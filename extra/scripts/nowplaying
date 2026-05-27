@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This is implemented using playerctl. See the manpage for compatibility players
+
+ echo "🎧 $(playerctl metadata --format '{{uc(playerName)}} - {{artist}}: {{title}}')"
+

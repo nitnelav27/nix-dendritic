@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#scw=$(xrandr | grep \* | awk {'print $1'} | sed "s/x.*//")
+#sch=$(xrandr | grep \* | awk {'print $1'} | sed "s/.*x//")
+#wh=$(echo "$sch * 0.3" | bc -l | awk {'print int($1)'})
+#wt=$(echo "($sch - $wh) * 1.2" | bc -l | awk {'print int($1)'})
+#wl=$(echo "($scw - $wh) * 1.35" | bc -l | awk {'print int($1)'})
+
+#pkill ffplay || ffplay -f video4linux2 -framerate 30  -y $wh -top $wt -left $wl -noborder -an -sn  -i /dev/video0
+
+pkill ffplay || ffplay -f video4linux2 -framerate 30 -noborder -an -sn -x 500 -y 350 -top 1000  -left 2450 -i /dev/video0

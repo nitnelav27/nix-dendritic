@@ -1,0 +1,4 @@
+#!/usr/bin/zsh
+
+source $HOME/docs/GMU/research/pyres/bin/activate
+$HOME/docs/GMU/research/pyres/bin/jupyter lab &
