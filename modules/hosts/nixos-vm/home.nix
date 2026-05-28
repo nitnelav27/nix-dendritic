@@ -16,6 +16,8 @@
     imports = [
       self.homeModules.vvhShell
       self.homeModules.vvhNvf
+      self.vvhTerminals
+      self.vvhHomeBasePkgs
     ];
 
     home = {

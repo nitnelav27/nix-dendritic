@@ -1,10 +1,11 @@
 { self, inputs, ...}: {
 
-  flake.homeModules.vvhNvf = { config, pkgs, self, lib, inputs, ... }:
+  flake.homeModules.vvhNvf = { config, pkgs, lib, ... }:
     let
       nixFormatter = if pkgs.stdenv.isDarwin then "alejandra" else "nixfmt";
     in
     {
+      imports = [ inputs.nvf.homeManagerModules.default ];
       programs.nvf = {
         enable = true;
         enableManpages = true;

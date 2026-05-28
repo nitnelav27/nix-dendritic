@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
   
-  flake.homeModules.vvhShell = { config, lib, pkgs, inputs, ... }:
+  flake.homeModules.vvhShell = { config, lib, pkgs, ... }:
     let
     zshDotDir = if pkgs.stdenv.isDarwin
                 then ".config/zsh"
@@ -59,12 +59,12 @@
           }
           {
             name = "colorize";
-            src = "${config.home.homeDirectory}/nix-dendritic/extra/zsh-plugins";
+            src = self + "/extra/zsh-plugins";
             file = "colorize.plugin.zsh";
           }
           {
             name = "colored-man-pages";
-            src = "${config.home.homeDirectory}/nix-dendritic/extra/zsh-plugins";
+            src = self + "/extra/zsh-plugins";
             file = "colored-man-pages.plugin.zsh";
           }
         ];
