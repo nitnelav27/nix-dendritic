@@ -15,6 +15,7 @@
     
     imports = [
       self.homeModules.vvhShell
+      self.homeModules.vvhNvf
     ];
 
     home = {
