@@ -52,7 +52,7 @@
             # Use Neovim for all plain text
             { mime = "text/*"; use = "edit"; }
             # Explicitly catch .nix files
-            { name = "*.nix"; use = "edit"; }
+            { url = "*.nix"; use = "edit"; }
             # Common media openers
             { mime = "video/*"; use = "play"; }
             { mime = "audio/*"; use = "play"; }
