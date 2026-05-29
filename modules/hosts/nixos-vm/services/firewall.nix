@@ -6,6 +6,8 @@
         80    ## npm
         443   ## npm
         8082  ## Homepage
+        8080  ## qbittorrent
+        8096  ## jellyfin
       ];
       in
   {

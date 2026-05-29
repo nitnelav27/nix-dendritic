@@ -27,7 +27,8 @@
           }
           {
             jellyfin = {
-              url = "https://medusa.rengo1136.org";
+              url = "http://10.27.115.4:8096";
+              href = "https://medusa.rengo1136.org";
               key = "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}";
               enableBlocks = true;
               enableNowPlaying = true;
@@ -39,7 +40,8 @@
           }
           {
             qbittorrent = {
-              url = "bt.rengo1136.org";
+              url = "http://10.27.115.4:8080";
+              href = "https://bt.rengo1136.org";
               username = "vvh";
               password = "{{HOMEPAGE_VAR_QBITTORRENT_PASS}}";
               enableLeechProgress = true;
