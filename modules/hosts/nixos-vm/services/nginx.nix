@@ -18,11 +18,75 @@
         recommendedProxySettings = true;
         recommendedTlsSettings = true;
         virtualHosts = {
-          "npm.rengo1136.org" = {
+          ## qbittorrent
+          "bt.rengo1136.org" = {
             forceSSL = true;
             useACMEHost = "rengo1136.org";
             locations."/" = {
-              proxyPass = "http://10.27.115.3:81";
+              proxyPass = "http://10.27.115.4:8080";
+              proxyWebsockets = true;
+            };
+          };
+          ## prowlarr
+          "downs.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:9696";
+              proxyWebsockets = true;
+            };
+          };
+          ## radarr
+          "film.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:7878";
+              proxyWebsockets = true;
+            };
+          };
+          ## jellyfin
+          "medusa.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:8096";
+              proxyWebsockets = true;
+            };
+          };
+          ## lidarr
+          "music.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:8686";
+              proxyWebsockets = true;
+            };
+          };
+          ## navidrome
+          "play.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:4533";
+              proxyWebsockets = true;
+            };
+          };
+          ## subtitles
+          "subs.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:6767";
+              proxyWebsockets = true;
+            };
+          };
+          ## sonarr
+          "tv.rengo1136.org" = {
+            forceSSL = true;
+            useACMEHost = "rengo1136.org";
+            locations."/" = {
+              proxyPass = "http://10.27.115.4:8989";
               proxyWebsockets = true;
             };
           };
