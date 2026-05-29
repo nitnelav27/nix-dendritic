@@ -16,15 +16,25 @@
     imports = [
       self.homeModules.vvhShell
       self.homeModules.vvhNvf
-      self.vvhTerminals
-      self.vvhHomeBasePkgs
+      self.homeModules.vvhTerminals
+      self.homeModules.vvhHomeBasePkgs
+      self.homeModules.vvhYazi
     ];
 
     home = {
       stateVersion = "25.05";
       sessionVariables = {
-        EDITOR = "vim";
-        VISUAL = "vim";
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+      };
+      file = {
+        figlet-fonts = {
+          enable = true;
+          executable = false;
+          recursive = true;
+          source = self + "/extra/figlet_fonts";
+          target = ".config/figlet_fonts";
+        };
       };
     };
 
