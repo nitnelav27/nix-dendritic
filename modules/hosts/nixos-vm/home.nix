@@ -19,6 +19,8 @@
       self.homeModules.vvhTerminals
       self.homeModules.vvhHomeBasePkgs
       self.homeModules.vvhYazi
+      self.homeModules.vvhGit
+      self.homeModules.homePkgsNixosVm
     ];
 
     home = {

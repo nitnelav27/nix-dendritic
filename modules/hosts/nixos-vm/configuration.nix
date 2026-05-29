@@ -2,11 +2,13 @@
 
   flake.nixosModules.nixosVmConfig = { pkgs, lib, ... }: {
     imports = [
+      inputs.agenix.nixosModules.default
       self.nixosModules.nixosVmHardware
       self.nixosModules.commonServices
       self.nixosModules.commonConfig
       self.nixosModules.nixosVmServices
       self.nixosModules.nixosVmFirewall
+      self.nixosModules.vvhNginx
     ];
 
     ## Set timezone
