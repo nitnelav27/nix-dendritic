@@ -9,6 +9,7 @@
       self.nixosModules.nixosVmServices
       self.nixosModules.nixosVmFirewall
       self.nixosModules.vvhNginx
+      self.nixosModules.vvhHomepage
     ];
 
     ## Set timezone
