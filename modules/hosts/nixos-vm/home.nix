@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
 
-  flake.homeConfigurations.vvh = inputs.home-manager.lib.homeManagerConfiguration {
+  flake.homeConfigurations.nixosVmHome = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs.legacyPackages."x86_64-linux";
 
     modules = [
@@ -39,6 +39,8 @@
           target = ".config/figlet_fonts";
         };
       };
+      ## Silence warning about home-manager and nixpkgs missmatch
+      enableNixpkgsReleaseCheck = false;
     };
 
     programs.home-manager.enable = true;

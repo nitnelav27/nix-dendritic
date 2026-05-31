@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
 
-  flake.homeConfigurations.vvh = inputs.home-manager.lib.homeManagerConfiguration {
+  flake.homeConfigurations.mediaCCPHome = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs.legacyPackages."x86_64-linux";
     modules = [
       self.homeModules.vvhMediaCCP
@@ -44,6 +44,8 @@
           target = ".config/figlet_fonts";
         };
       };
+      ## Silence warning about home-manager and nixpkgs missmatch
+      enableNixpkgsReleaseCheck = false;
     };
 
     # Let Home Manager install and manage itself.

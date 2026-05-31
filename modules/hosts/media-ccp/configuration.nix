@@ -14,6 +14,7 @@
       self.nixosModules.mediaCCPGraphics
       self.nixosModules.mediaCCPSamba 
       self.nixosModules.mediaCCPArr 
+      self.nixosModules.mediaCCPQbittorrent
       self.nixosModules.mediaCCPStreaming 
     ];
 

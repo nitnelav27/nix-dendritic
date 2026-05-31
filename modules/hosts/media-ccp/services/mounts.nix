@@ -2,7 +2,7 @@
 
   flake.nixosModules.mediaCCPMounts = { config, lib, pkgs, ... }: {
 
-    filesystems = {
+    fileSystems = {
       #### Disk mounts 
       ## MEDIA HDD
       "/storage/media" = {
