@@ -53,5 +53,6 @@
         ProtectHome = lib.mkForce "read-only"; 
         ReadWritePaths = [ "/home/vvh/appData/sonarr" ];
       };
-   };
+    };
+  };
 }

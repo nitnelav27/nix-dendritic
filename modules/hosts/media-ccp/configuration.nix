@@ -3,16 +3,18 @@
   flake.nixosModules.mediaCCPConfig = {config, lib, pkgs, ... }: {
     
     imports = [
-        # /etc/nixos/hardware-configuration.nix 
-        # ./localModules/network.nix
-        # ./localModules/firewall.nix
-        # ./localModules/mounts.nix
-        # ./localModules/services.nix
-        # ./localModules/graphics.nix
-        # ../../modules/common/storageOpt.nix
-        # ../../modules/media/jellyfin.nix
-        # ./localModules/samba.nix
-        # ../../modules/media-services/media-rengo.nix
+      inputs.agenix.nixosModules.default
+      self.nixosModules.mediaCCPHardware
+      self.nixosModules.commonServices
+      self.nixosModules.commonConfig
+      self.nixosModules.mediaCCPServices
+      self.nixosModules.mediaCCPNetwork
+      self.nixosModules.mediaCCPFirewall
+      self.nixosModules.mediaCCPMounts
+      self.nixosModules.mediaCCPGraphics
+      self.nixosModules.mediaCCPSamba 
+      self.nixosModules.mediaCCPArr 
+      self.nixosModules.mediaCCPStreaming 
     ];
 
     # Set your time zone.

@@ -14,12 +14,13 @@
   flake.homeModules.vvhMediaCCP = { pkgs, ... }: {
 
     imports = [
-      # ../../modules/common/myshell.nix
-      # ../../modules/common/neovim.nix
-      # ../../modules/common/git.nix
-      # ../../modules/common/homeBase.nix
-      # ./localModules/homePkgs.nix
-      # ../../modules/common/yazi.nix
+      self.homeModules.vvhShell
+      self.homeModules.vvhNvf
+      self.homeModules.vvhTerminals
+      self.homeModules.vvhHomeBasePkgs
+      self.homeModules.vvhYazi
+      self.homeModules.vvhGit
+      self.homeModules.mediaCCPHomePkgs
     ];
 
     home = {
