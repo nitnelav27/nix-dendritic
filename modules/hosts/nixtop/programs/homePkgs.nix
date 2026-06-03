@@ -47,6 +47,7 @@
       pwvucontrol
       ripgrep
       scrot
+      seahorse ## Graphical frontend fro GNOME Keyring
       slack
       slurp
       #spotify

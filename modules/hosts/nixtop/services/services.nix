@@ -2,7 +2,16 @@
 
   flake.nixosModules.nixtopServices = { config, lib, pkgs, ... }: {
 
-    security.rtkit.enable = true;
+    security = {
+      rtkit.enable = true;
+      pam = {
+        services = {
+          gdm.enableGnomeKeyring = true;
+        };
+      };
+    };
+    
+    imports = [ inputs.solaar.nixosModules.default ];
 
     hardware = {
       bluetooth.enable = true;
@@ -121,7 +130,10 @@
       hardware.openrgb = {
         enable = true;
         package = pkgs.openrgb-with-all-plugins;
-      }; 
+      };
+      gnome = {
+        gnome-keyring.enable = true;
+      };
       # ollama = {
       #   enable = true;
       #   package = pkgs.ollama-cuda;

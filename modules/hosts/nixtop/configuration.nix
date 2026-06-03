@@ -106,7 +106,6 @@
         rpi-imager
         zstd
         lmstudio
-	git
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
@@ -132,6 +131,9 @@
     console = {
       useXkbConfig = true; # use xkb.options in tty.
     };
+
+    ### Extremely important to link home manager 
+    home-manager.users.vsvh = self.homeModules.vsvhNixtop;
 
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

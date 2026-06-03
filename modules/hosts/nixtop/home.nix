@@ -11,7 +11,7 @@
     ];
   };
 
-  flake.homeModules.vsvhNixtop = { config, pkgs, lib, ... }: {
+  flake.homeModules.vsvhNixtop = { pkgs, ... }: {
 
     imports = [
       self.homeModules.vvhShell
