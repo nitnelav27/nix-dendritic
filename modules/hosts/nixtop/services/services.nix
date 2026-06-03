@@ -121,14 +121,7 @@
       hardware.openrgb = {
         enable = true;
         package = pkgs.openrgb-with-all-plugins;
-      };
-      cliphist = {
-        enable = true;
-        extraOptions = [
-          "-max-items" "1000"
-          "-max-dedupe-search" "20"
-        ];
-      };
+      }; 
       # ollama = {
       #   enable = true;
       #   package = pkgs.ollama-cuda;

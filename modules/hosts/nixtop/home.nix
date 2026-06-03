@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
 
-  flake.homeConfigurations.nixtopHome = inputs.home-manager.lib.homeManagerConfiguration {
+  flake.homeConfigurations.vsvh = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs.legacyPackages."x86_64-linux";
     modules = [
       self.homeModules.vsvhNixtop
@@ -14,21 +14,21 @@
   flake.homeModules.vsvhNixtop = { config, pkgs, lib, ... }: {
 
     imports = [
-        # ../../modules/common/terminals.nix 
-        # ../../modules/common/myshell.nix
-        # ./localModules/gnomeHomeConfig.nix
-        # ../../modules/wm/hyprland.nix
-        # ../../modules/wm/hyprlock.nix
-        # ../../modules/common/homeBase.nix
-        # ./localModules/homePkgs.nix
-        # ./localModules/homeServices.nix
-        # ../../modules/common/neovim.nix
-        # ../../modules/common/git.nix
-        # ../../modules/media/mpv.nix
-        # ../../modules/wm/rofi.nix
-        # ../../modules/utils/vscode.nix 
-        # ./localModules/ssh.nix 
-        # ../../modules/common/yazi.nix
+      self.homeModules.vvhShell
+      self.homeModules.vvhTerminals
+      self.homeModules.vvhNvf
+      self.homeModules.vvhHomeBasePkgs
+      self.homeModules.nixtopHomePkgs
+      self.homeModules.vvhYazi
+      self.homeModules.vvhGit
+      self.homeModules.vvhMediaPlayers
+      self.homeModules.vvhRofi
+      self.homeModules.vvhVSCode
+      self.homeModules.nixtopGnomeHomeConfig
+      self.homeModules.vsvhSSH
+      self.homeModules.vvhHyprland
+      self.homeModules.vvhHyprlock
+      self.homeModules.vvhHypridle
     ];
     
     home = {
@@ -97,6 +97,17 @@
       };
       ## Silence warning about home-manager and nixpkgs missmatch
       enableNixpkgsReleaseCheck = false;
+    };
+
+    ### Home Services
+    services = {
+      cliphist = {
+        enable = true;
+        extraOptions = [
+          "-max-items" "1000"
+          "-max-dedupe-search" "20"
+        ];
+      };
     };
 
     # Let Home Manager install and manage itself.

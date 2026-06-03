@@ -10,7 +10,6 @@
       self.nixosModules.nixtopServices
       self.nixosModules.nixtopMounts
       self.nixosModules.vvhGnome
-      self.nixosModules.vvhHyprland
     ];
 
     # Activate swap
@@ -93,7 +92,7 @@
         withUWSM = true;
         xwayland.enable = true;
       };
-      coolercontrol = true;
+      coolercontrol.enable = true;
     };
 
     environment = {
@@ -107,6 +106,7 @@
         rpi-imager
         zstd
         lmstudio
+	git
       ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
