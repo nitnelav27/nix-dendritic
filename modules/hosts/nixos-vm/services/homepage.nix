@@ -72,6 +72,17 @@
             };
           }
           {
+            search = {
+              provider = [
+                "google"
+                "duduckgo"
+              ];
+              focus = true;
+              showSearchSuggestions = true;
+              target = "_blank";
+            };
+          }
+          {
             openmeteo = {
               label = "Concepción";
               latitude = -36.82056;
