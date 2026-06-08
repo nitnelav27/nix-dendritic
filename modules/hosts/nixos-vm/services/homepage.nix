@@ -258,6 +258,16 @@
                 ];
               }
               {
+                "Claude" = [
+                  {
+                    abbr = "CC";
+                    href = "https://claude.ai";
+                    icon = "sh-claude";
+                    description = "Chat Interface";
+                  }
+                ];
+              }
+              {
                 "Gemini" = [
                   {
                     abbr = "GG";
