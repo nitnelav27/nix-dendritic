@@ -23,17 +23,17 @@
           port = 1186;
           user = "vvh";
           identityFile = "~/.ssh/id_ed25519";
-        };
-        "rpi-ccp" = {
-          hostname = "10.27.115.3";
-          port = 1186;
-          user = "vvh";
-          identityFile = "~/.ssh/id_ed25519";
-        };
+        }; 
         "nixtop" = {
           hostname = "10.27.115.115";
           port = 1186;
           user = "vsvh";
+          identityFile = "~/.ssh/id_ed25519";
+        };
+        "nixos-vm" = {
+          hostname = "10.27.115.3";
+          port = 1186;
+          user = "vvh";
           identityFile = "~/.ssh/id_ed25519";
         };
       };

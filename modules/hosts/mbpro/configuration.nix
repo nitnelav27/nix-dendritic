@@ -32,7 +32,12 @@
       MACOSX_DEPLOYEMENT_TARGET = "26.0.1";
     };
 
-    services.openssh.enable = true;
+    services.openssh = {
+      enable = true;
+      extraConfig = ''
+        Port 1186
+      '';
+    };
 
     users.users.vvh = {
       home = "/Users/vvh";
