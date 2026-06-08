@@ -40,6 +40,10 @@
           "XCURSOR_SIZE,24"
           "HYPRCURSOR_SIZE,24"
         ];
+        cursor = {
+          no_hardware_cursors = true;
+          enable_hyprcursor = true;
+        };
         #####################
         ### LOOK AND FEEL ###
         #####################
@@ -229,6 +233,14 @@
     };
 
     programs.hyprlock.enable = true; 
+
+    home.pointerCursor = {
+      gtk.enable = true;
+      hyprcursor.enable = true;
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
+      size = 24;
+    };
 
   };
 }

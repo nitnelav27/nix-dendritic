@@ -112,11 +112,8 @@
         LIBVA_DRIVER_NAME = "nvidia";
         GBM_BACKEND = "nvidia-drm";
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        # Required for 50-series/Wayland cursor visibility
-        WLR_NO_HARDWARE_CURSORS = "1";
         # Helps SDDM and Hyprland find the correct DRM seat
         XDG_SESSION_TYPE = "wayland";
-        MUTTER_DEBUG_FORCE_KMS_MODE = "simple"; # Helps GDM draw on Nvidia
       };
     };
     

@@ -1,62 +1,44 @@
 { self, inputs, ... }: {
 
-  flake.homeConfigurations.vsvh = inputs.home-manager.lib.homeManagerConfiguration {
-    pkgs = import inputs.nixpkgs.legacyPackages."x86_64-linux";
-    modules = [
-      self.homeModules.vsvhNixtop
-      {
-        home.username = "vsvh";
-        home.homeDirectory = "/home/vsvh";
-      }
-    ];
-  };
-
-  flake.homeModules.vsvhNixtop = { pkgs, ... }: {
+  flake.homeModules.vvhMbpro = { pkgs, ... }: {
 
     imports = [
+      inputs.mac-app-util.homeManagerModules.default
       self.homeModules.vvhShell
       self.homeModules.vvhTerminals
       self.homeModules.vvhNvf
       self.homeModules.vvhHomeBasePkgs
-      self.homeModules.nixtopHomePkgs
+      self.homeModules.mbproHomePkgs
       self.homeModules.vvhYazi
       self.homeModules.vvhGit
       self.homeModules.vvhMediaPlayers
-      self.homeModules.vvhRofi
       self.homeModules.vvhVSCode
-      self.homeModules.nixtopGnomeHomeConfig
-      self.homeModules.vsvhSSH
-      self.homeModules.vvhHyprland
-      self.homeModules.vvhHyprlock
-      self.homeModules.vvhHypridle
+      self.homeModules.vvhSSH
     ];
-    
+
     home = {
-      stateVersion = "24.11"; ## DO NOT change this
+      username = "vvh";
+      homeDirectory = "/Users/vvh";
+      stateVersion = "24.11";
+      enableNixpkgsReleaseCheck = false;
+
       sessionVariables = {
-        NIXOS_OZONE_WL = "1";
-        LIBVA_DRIVER_NAME = "nvidia";
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         XDG_DATA_HOME = "$HOME/.local/share";
         XDG_CACHE_HOME = "$HOME/.cache";
         XDG_CONFIG_HOME = "$HOME/.config";
         DOOMDIR = "$HOME/.config/doom";
         IPYTHONDIR = "$HOME/.config/ipython";
+        PYRIGHT_PYTHON_FORCE_VERSION = "3.14";
         JUPYTER_CONFIG_DIR = "$HOME/.config/jupyter";
         EDITOR = "nvim";
-        READER = "zathura";
         VISUAL = "nvim";
         TERMINAL = "ghostty";
         VIDEO = "mpv";
-        OPENER = "xdg-open";
+        OPENER = "open";
         PAGER = "less";
         BROWSER = "firefox";
-        NASDATA = "$HOME/nas/data";
-        NASRES = "$HOME/nas/results";
-        SHELL = "${pkgs.zsh}/bin/zsh";
-        STARSHIP_LOG = "error";
       };
+
       file = {
         doom = {
           enable = true;
@@ -92,29 +74,10 @@
           recursive = true;
           source = self + "/extra/figlet_fonts";
           target = ".config/figlet_fonts";
-        }; 
-      };
-      ## Silence warning about home-manager and nixpkgs missmatch
-      enableNixpkgsReleaseCheck = false;
-    };
-
-    ### Home Services
-    services = {
-      cliphist = {
-        enable = true;
-        extraOptions = [
-          "-max-items" "1000"
-          "-max-dedupe-search" "20"
-        ];
+        };
       };
     };
 
-    ## Claude-code
-    programs = {
-      claude-code.enable = true;
-    };
-
-    # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
   };
 }
