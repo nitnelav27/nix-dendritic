@@ -49,6 +49,8 @@
     };
 
     mac-app-util.url = "github:hraban/mac-app-util";
+
+    nix-claude-code.url = "github:ryoppippi/nix-claude-code";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);

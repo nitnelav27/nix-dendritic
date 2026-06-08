@@ -24,6 +24,11 @@
         };
       }
       inputs.mac-app-util.darwinModules.default
+      {
+        nixpkgs.overlays = [
+          inputs.nix-claude-code.overlays.default
+        ];
+      }
     ];
   };
 }

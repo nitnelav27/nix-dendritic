@@ -15,6 +15,7 @@
       texlab
       windsurf
       wget
+      claude-code
     ];
   };
 }
