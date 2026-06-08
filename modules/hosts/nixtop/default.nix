@@ -4,6 +4,11 @@
     modules = [
       self.nixosModules.nixtopConfig
       self.nixosModules.commonHomeManager
+      {
+        nixpkgs.overlays = [
+          inputs.nix-claude-code.overlays.default
+        ];
+      }
     ];
   };
 }

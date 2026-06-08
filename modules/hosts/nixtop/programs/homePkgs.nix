@@ -68,6 +68,7 @@
       zathura
       zoom-us
       #google-chrome
+      claude-code
     ];
   };
 }

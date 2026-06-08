@@ -109,10 +109,10 @@
       };
     };
 
-    ## Claude-code
-    programs = {
-      claude-code.enable = true;
-    };
+    # ## Claude-code
+    # programs = {
+    #   claude-code.enable = true;
+    # };
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
