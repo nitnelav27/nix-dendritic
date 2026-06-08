@@ -14,12 +14,7 @@
       allowUnfree = true;
       allowUnsupportedSystem = true;
     };
-    nixpkgs.overlays = [
-      (final: prev: {
-        ruby_4_0 = prev.ruby_3_3;
-      })
-    ];
-
+    
     nix.settings.experimental-features = "nix-command flakes";
 
     system.stateVersion = 6;
