@@ -10,6 +10,7 @@
       self.nixosModules.nixtopServices
       self.nixosModules.nixtopMounts
       self.nixosModules.vvhGnome
+      self.nixosModules.niri
     ];
 
     # Activate swap
@@ -50,7 +51,7 @@
       };
       users = {
         vsvh = {
-          description = "Main user for desktop computer";
+          description = "Valentin Vergara Hidd";
           isNormalUser = true;
           group = "vsvh";
           homeMode = "764";

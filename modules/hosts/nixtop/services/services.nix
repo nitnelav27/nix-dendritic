@@ -6,7 +6,7 @@
       rtkit.enable = true;
       pam = {
         services = {
-          gdm.enableGnomeKeyring = true;
+          sddm.enableGnomeKeyring = true;
         };
       };
     };
@@ -134,13 +134,7 @@
       gnome = {
         gnome-keyring.enable = true;
       };
-      greetd = {
-        enable = true;
-        settings.default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions /run/current-system/sw/share/wayland-sessions";
-          user = "greeter";
-        };
-      };
+      greetd.enable = false;
       # ollama = {
       #   enable = true;
       #   package = pkgs.ollama-cuda;
@@ -169,7 +163,7 @@
       avahi.enable = true;
       udisks2.enable = true;
       blueman.enable = true;
-      hypridle.enable = true;
+      #hypridle.enable = true;
       timesyncd.enable = false;
       chrony.enable = true;
       printing.enable = true;
@@ -203,12 +197,14 @@
         };
       };
       user = {
-        extraConfig = ''
-          DefaultEnvironment="PATH=/usr/bin:/bin"
-          DefaultEnvironment="LIBVA_DRIVER_NAME=nvidia"
-          DefaultEnvironment="GBM_BACKEND=nvidia-drm"
-          DefaultEnvironment="__GLX_VENDOR_LIBRARY_NAME=nvidia"
-        '';
+        settings.Manager = {
+          DefaultEnvironment = [
+            "PATH=/usr/bin:/bin"
+            "LIBVA_DRIVER_NAME=nvidia"
+            "GBM_BACKEND=nvidia-drm"
+            "__GLX_VENDOR_LIBRARY_NAME=nvidia"
+          ];
+        };
       };
     };
 

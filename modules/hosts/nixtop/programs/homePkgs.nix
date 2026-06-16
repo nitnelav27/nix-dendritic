@@ -69,6 +69,23 @@
       zoom-us
       #google-chrome
       claude-code
+      # (rstudioWrapper.override{
+      #   packages = with rPackages; [
+      #     ggplot2
+      #     dplyr
+      #     tidyr
+      #     readr
+      #     pacman
+      #     quarto
+      #     arrow ## parquet support
+      #     tidyverse
+      #     psych
+      #     sjmisc
+      #     sjPlot
+      #     openxlsx
+      #   ];
+      # })
+      # quarto
     ];
   };
 }

@@ -4,8 +4,11 @@
 
     services = {
       displayManager = {
-        gdm = {
-          enable = false;
+        sddm = {
+          enable = true;
+          wayland.enable = true;
+          theme = "sddm-astronaut-theme";
+          package = pkgs.kdePackages.sddm;
         };
       };
       desktopManager = {
@@ -24,6 +27,7 @@
       gnomeExtensions.blur-my-shell
       gnomeExtensions.just-perfection
       gnomeExtensions.appindicator
+      sddm-astronaut
     ];
   };
 }
