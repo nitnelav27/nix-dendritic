@@ -20,6 +20,7 @@
         input = {
           keyboard.xkb = {
             layout = "us,es";
+            options = "grp:caps_toggle";
           };
           disable-power-key-handling = true;
         };
@@ -29,25 +30,25 @@
             mode = "2560x1440@180.001";
             scale = 1.0;
             position = _: { props = { x = 0; y = 0; }; };
-            variable-refresh-rate = _: {};
+            #variable-refresh-rate = _: {};
             hot-corners = { off = _: {}; };
           };
           "DP-2" = {
             mode = "2560x1440@180.003";
             scale = 1.0;
             position = _: { props = { x = 2560; y = 0; }; };
-            variable-refresh-rate = _: {};
+            #variable-refresh-rate = _: {};
             hot-corners = { off = _: {}; };
           };
         };
 
         workspaces = {
-          "main"  = { open-on-output = "DP-1"; };
-          "browse" = { open-on-output = "DP-1"; };
-          "code"  = { open-on-output = "DP-1"; };
-          "comms" = { open-on-output = "DP-2"; };
-          "read"  = { open-on-output = "DP-2"; };
-          "terms" = { open-on-output = "DP-2"; };
+          "01main"  = { open-on-output = "DP-1"; };
+          "02browse" = { open-on-output = "DP-1"; };
+          "03code"  = { open-on-output = "DP-1"; };
+          "04comms" = { open-on-output = "DP-2"; };
+          "05read"  = { open-on-output = "DP-2"; };
+          "06terms" = { open-on-output = "DP-2"; };
         };
 
         layout.gaps = 5;
@@ -72,19 +73,19 @@
           "Mod+Shift+K".move-window-up    = _: {};
           "Mod+Shift+J".move-window-down  = _: {};
 
-          "Mod+1".focus-workspace = "main";
-          "Mod+2".focus-workspace = "browse";
-          "Mod+3".focus-workspace = "code";
-          "Mod+4".focus-workspace = "comms";
-          "Mod+5".focus-workspace = "read";
-          "Mod+6".focus-workspace = "terms";
+          "Mod+1".focus-workspace = "01main";
+          "Mod+2".focus-workspace = "02browse";
+          "Mod+3".focus-workspace = "03code";
+          "Mod+4".focus-workspace = "04comms";
+          "Mod+5".focus-workspace = "05read";
+          "Mod+6".focus-workspace = "06terms";
 
-          "Mod+Shift+1".move-column-to-workspace = "main";
-          "Mod+Shift+2".move-column-to-workspace = "browse";
-          "Mod+Shift+3".move-column-to-workspace = "code";
-          "Mod+Shift+4".move-column-to-workspace = "comms";
-          "Mod+Shift+5".move-column-to-workspace = "read";
-          "Mod+Shift+6".move-column-to-workspace = "terms";
+          "Mod+Shift+1".move-column-to-workspace = "01main";
+          "Mod+Shift+2".move-column-to-workspace = "02browse";
+          "Mod+Shift+3".move-column-to-workspace = "03code";
+          "Mod+Shift+4".move-column-to-workspace = "04comms";
+          "Mod+Shift+5".move-column-to-workspace = "05read";
+          "Mod+Shift+6".move-column-to-workspace = "06terms";
         };
       };
     };
