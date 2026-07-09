@@ -13,6 +13,7 @@
           efiSupport = true;
           efiInstallAsRemovable = true;
           device = "nodev";
+          useOSProber = true;
           configurationLimit = 5;
         };
       };
