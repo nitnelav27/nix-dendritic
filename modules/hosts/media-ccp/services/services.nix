@@ -55,6 +55,11 @@
             '';
           };
         };
+        timesyncd.servers = [
+          "time.cloudflare.com"
+          "pool.ntp.org"
+          "time.google.com"
+        ];
       };
     };
 }
