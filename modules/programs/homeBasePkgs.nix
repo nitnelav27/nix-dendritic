@@ -11,8 +11,7 @@
       aspell
       aspellDicts.en
       aspellDicts.es
-      bat
-      cliphist
+      bat 
       dialog
       dig
       fd
@@ -53,7 +52,8 @@
     ]
     # Logic: Only add nixfmt if we are NOT on Darwin
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-        nixfmt 
+        nixfmt
+        cliphist
     ];
 
     fonts = {
