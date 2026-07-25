@@ -107,7 +107,8 @@
         rpi-imager
         zstd
         lmstudio
-      ];
+      ]
+      ++ [ inputs.agenix.packages."${system}".default ];
       sessionVariables = {
         NIXOS_OZONE_WL = "1";
         LIBVA_DRIVER_NAME = "nvidia";
@@ -116,8 +117,8 @@
         # Helps SDDM and Hyprland find the correct DRM seat
         XDG_SESSION_TYPE = "wayland";
       };
-    };
-    
+    }; 
+
     nix.settings = {
       download-buffer-size = 4096*1024;
       sandbox = true;
