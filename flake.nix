@@ -51,6 +51,11 @@
     mac-app-util.url = "github:hraban/mac-app-util";
 
     nix-claude-code.url = "github:ryoppippi/nix-claude-code";
+
+    ## Raspberry Pi 5 board profile (kernel pin, device trees, extlinux, initrd
+    ## modules for NVMe / PCIe / RP1). Deliberately NOT following nixpkgs:
+    ## nixos-hardware has no nixpkgs input to follow.
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
