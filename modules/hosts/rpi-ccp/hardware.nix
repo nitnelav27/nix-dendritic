@@ -21,7 +21,7 @@
       "/boot/firmware" = {
         device = "/dev/disk/by-uuid/4135-5B63";
         fsType = "vfat";
-        options = [ "nofail" "noauto" "fmask=0077" "dmask=0077" ];
+        options = [ "nofail" "fmask=0077" "dmask=0077" ];
       };
     };
 
@@ -45,7 +45,7 @@
     ## cached, and for a headless nginx/homepage box you lose nothing.
     ## Drop this line if you later need the camera stack or MIPI DSI displays.
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-
+    boot.kernel.sysctl."vm.mmap_rnd_bits" = lib.mkForce 28;
     ## Reduce SD-card wear: build sandboxes and /tmp in RAM.
     boot.tmp.useTmpfs = true;
   };

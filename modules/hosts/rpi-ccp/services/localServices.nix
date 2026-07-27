@@ -46,11 +46,18 @@
           "time.google.com"
         ];
       };
+      resolved = {
+        enable = true;
+        fallbackDns = [
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
+      };
     };
 
     ## Agenix for secrets
     environment.systemPackages = [
-      inputs.agenix.packages.${pkgs.system}.default
+      inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     age = {
