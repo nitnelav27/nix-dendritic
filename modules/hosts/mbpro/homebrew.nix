@@ -10,7 +10,7 @@
         "slack"
         "calibre"
         "zoom"
-        "adobe-acrobat-reader"
+        #"adobe-acrobat-reader"
         "mactex"
         "whatsapp"
         "via"
