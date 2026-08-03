@@ -1,9 +1,7 @@
 { self, inputs, ... }: {
 
-  flake.homeModules.N1proHomePkgs = { config, lib, pkgs, ... }: {
+  flake.homeModules.utdt10141HomePkgs = { config, lib, pkgs, ... }: {
     home.packages = with pkgs; [
-      fastfetch
-      cowsay
       sl
       texlive.combined.scheme-full
       cmake

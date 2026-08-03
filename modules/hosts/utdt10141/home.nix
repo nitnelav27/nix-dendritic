@@ -1,21 +1,21 @@
 { self, inputs, ... }: {
 
-  flake.homeConfigurations.n1proHome = inputs.home-manager.lib.homeManagerConfiguration {
+  flake.homeConfigurations.utdt10141Home = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs {
       system = "x86_64-linux";
       config.allowUnfree = true;
     };
 
     modules = [
-      self.homeModules.cosmeN1pro
+      self.homeModules.vvhUtdt10141
       {
-        home.username = "cosme";           # <- set to your actual account name on the work box
-        home.homeDirectory = "/home/cosme"; # <- match the line above
+        home.username = "vvh";           
+        home.homeDirectory = "/home/vvh"; 
       }
     ];
   };
 
-  flake.homeModules.cosmeN1pro = { pkgs, ... }: {
+  flake.homeModules.vvhUtdt10141 = { pkgs, ... }: {
 
     imports = [ 
       self.homeModules.vvhShell
@@ -24,8 +24,9 @@
       self.homeModules.vvhHomeBasePkgs
       self.homeModules.vvhYazi
       self.homeModules.vvhGit
-      self.homeModules.N1proHomePkgs
-      self.homeModules.vvhVSCode   # uncomment to bring your VS Code profile over too
+      self.homeModules.utdt10141HomePkgs
+      self.homeModules.vvhVSCode   
+      self.homeModules.utdt10141GnomeConfig
     ];
 
     targets.genericLinux = {
