@@ -1,7 +1,10 @@
 { self, inputs, ... }: {
 
   flake.homeConfigurations.n1proHome = inputs.home-manager.lib.homeManagerConfiguration {
-    pkgs = import inputs.nixpkgs.legacyPackages."x86_64-linux";
+    pkgs = import inputs.nixpkgs {
+      system = "x86_64-linux";
+      config.allowUnfree = true;
+    };
 
     modules = [
       self.homeModules.cosmeN1pro
@@ -14,7 +17,7 @@
 
   flake.homeModules.cosmeN1pro = { pkgs, ... }: {
 
-    imports = [
+    imports = [ 
       self.homeModules.vvhShell
       self.homeModules.vvhNvf
       self.homeModules.vvhTerminals
@@ -24,6 +27,11 @@
       self.homeModules.N1proHomePkgs
       self.homeModules.vvhVSCode   # uncomment to bring your VS Code profile over too
     ];
+
+    targets.genericLinux = {
+      enable = true;
+      nixGL.packages = inputs.nixgl.packages;
+    };
 
     home = {
       stateVersion = "25.05";

@@ -4,7 +4,7 @@
 
     programs.ghostty = {
       enable = true;
-      package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
+      package = if pkgs.stdenv.isDarwin then null else config.lib.nixGL.wrap pkgs.ghostty;
       ## Enable for whichever shell you plan to use!
       #enableBashIntegration = true;
       #enableFishIntegration = true;

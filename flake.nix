@@ -56,6 +56,12 @@
     ## modules for NVMe / PCIe / RP1). Deliberately NOT following nixpkgs:
     ## nixos-hardware has no nixpkgs input to follow.
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
