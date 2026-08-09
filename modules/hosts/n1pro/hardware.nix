@@ -27,24 +27,24 @@
 
     fileSystems = {
       "/" = {
-        device = "/dev/disk/by-uuid/00000000-0000-0000-0000-000000000000"; # TODO: real root UUID
+        device = "/dev/disk/by-uuid/d74e2316-7884-4e68-a286-07c40761cdb6"; 
         fsType = "ext4";
       };
 
       "/boot" = {
-        device = "/dev/disk/by-uuid/0000-0000"; # TODO: real ESP UUID (shared with Windows)
+        device = "/dev/disk/by-uuid/E217-1641"; 
         fsType = "vfat";
         options = [
           "fmask=0077"
           "dmask=0077"
         ];
       };
+      "/home" = {
+        device = "/dev/disk/by-uuid/5fe18cb9-b61d-40e1-8c9e-d69fb2e48920";
+        fsType = "ext4";
+      };
     };
 
-    ## 12GB RAM + a weak N150 -- zram-backed swap buys real headroom without
-    ## disk I/O, and modern Gracemont cores handle zstd compression cheaply.
-    ## Cheaper than a swapfile on this hardware; drop it if you'd rather use
-    ## a plain swap partition/file instead.
     zramSwap = {
       enable = true;
       memoryPercent = 50;
