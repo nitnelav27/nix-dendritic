@@ -10,6 +10,7 @@
       gnomeExtensions.just-perfection    # same taste as nixtop's vvhGnome
       gnomeExtensions.blur-my-shell
       gnomeExtensions.appindicator
+      gnomeExtensions.tiling-shell        # drag-to-tile, multi-monitor snap zones
     ];
 
     dconf.settings = {
@@ -22,8 +23,21 @@
           "just-perfection-desktop@just-perfection"
           "blur-my-shell@aunetx"
           "appindicatorsupport@rgcjonas.gmail.com"
+          "tilingshell@ferrarodomenico.com"
         ];
       };
+
+      ## --- Tiling Shell: drag-to-tile zones, per-monitor aware ---
+      ## Once you've tweaked layouts/gaps/keybindings via the extension's own
+      ## settings UI, capture them declaratively with:
+      ##   dconf dump /org/gnome/shell/extensions/tilingshell/ > tilingshell.ini
+      ## and translate the keys into this block, e.g.:
+      # "org/gnome/shell/extensions/tilingshell" = {
+      #   inner-gaps = 8;
+      #   outer-gaps = 8;
+      #   snap-assist = true;
+      #   enable-move-keybindings = true;
+      # };
 
       ## --- Colors ---
       "org/gnome/desktop/interface" = {
@@ -58,14 +72,25 @@
     };
 
     ## --- Default apps ---
-    xdg.mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "text/html" = "firefox.desktop";
-        "x-scheme-handler/http" = "firefox.desktop";
-        "x-scheme-handler/https" = "firefox.desktop";
-        "application/pdf" = "org.gnome.Evince.desktop";
-        "inode/directory" = "org.gnome.Nautilus.desktop";
+    xdg = {
+      mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "text/html" = "google-chrome.desktop";
+          "x-scheme-handler/http" = "google-chrome.desktop";
+          "x-scheme-handler/https" = "google-chrome.desktop";
+          "x-scheme-handler/about" = "google-chrome.desktop";
+          "x-scheme-handler/unknown" = "google-chrome.desktop";
+          "application/pdf" = "org.gnome.Evince.desktop";
+          "inode/directory" = "org.gnome.Nautilus.desktop";
+        };
+      };
+      userDirs = {
+        enable = true;
+        createDirectories = true;
+        documents = "${config.home.homeDirectory}/docs";
+        download  = "${config.home.homeDirectory}/downs";
+        desktop = "${config.home.homeDirectory}/desktop";
       };
     };
   };

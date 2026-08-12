@@ -5,6 +5,9 @@
       sl
       texlive.combined.scheme-full
       cmake
+      (config.lib.nixGL.wrap projecteur)
+      (config.lib.nixGL.wrap sioyek)
+      papers
       #emacs
       enchant
       electron
@@ -35,9 +38,9 @@
       python3Packages.isort
       ripgrep
       scrot
-      slack
+      #slack
       slurp
-      #spotify
+      spotify
       sqlite
       #supersonic-wayland
       texlab
@@ -68,5 +71,7 @@
       # })
       # quarto
     ];
+
+    xdg.mimeApps.defaultApplications."application/pdf" = "sioyek.desktop";
   };
 }

@@ -1,6 +1,6 @@
 { self, inputs, ... }: {
 
-  flake.homeModules.vvhTerminals = { config, lib, pkgs, ... }: {
+  flake.homeModules.vvhTerminals = { config, lib, pkgs, hostname, ... }: {
 
     programs.ghostty = {
       enable = true;
@@ -13,7 +13,8 @@
         theme = "Dark+";
         background-opacity = "0.9";
         font-family = "JetBrainsMonoNL Nerd Font Mono";
-        font-size = 18;
+        font-size = 
+          if hostname == "utdt10141" then 12 else 18;
         macos-hidden = "always";
         window-width = 150;
         window-height = 50;

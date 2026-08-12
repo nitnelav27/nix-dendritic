@@ -15,6 +15,7 @@
               mapleader = " ";
               vimtex_view_method = if pkgs.stdenv.isDarwin then "skim" else "zathura";
               vimtex_compiler_method = "latexmk";
+              vimtex_compiler_engine = "lualatex";
               tex_conceal = "abdmg";
               vimtex_quickfix_open_on_warning = 0;
             };
@@ -97,7 +98,29 @@
                 pattern = "tex",
                 callback = function()
                 local opts = { buffer = true, silent = true }
-                vim.keymap.set('n', '<leader>ll', '<cmd>VimtexCompile<cr>', { buffer = true, desc = "Compile/Stop LaTeX" })
+                vim.keymap.set('n', '<leader>ll', function()
+                  local file = vim.fn.expand('%:t')
+                  local jobname = vim.fn.expand('%:t:r')
+                  local dir = vim.fn.expand('%:p:h')
+                  local cmd = string.format(
+                    'cd %s && lualatex -interaction=nonstopmode -synctex=1 %s && biber %s && lualatex -interaction=nonstopmode -synctex=1 %s && lualatex -interaction=nonstopmode -synctex=1 %s',
+                    vim.fn.shellescape(dir),
+                    vim.fn.shellescape(file),
+                    vim.fn.shellescape(jobname),
+                    vim.fn.shellescape(file),
+                    vim.fn.shellescape(file)
+                  )
+                  vim.notify('Compiling ' .. file .. ' (lualatex -> biber -> lualatex x2)...', vim.log.levels.INFO)
+                  vim.fn.jobstart(cmd, {
+                    on_exit = function(_, code)
+                      if code == 0 then
+                        vim.notify('LaTeX compile succeeded', vim.log.levels.INFO)
+                      else
+                        vim.notify('LaTeX compile failed (exit ' .. code .. ')', vim.log.levels.ERROR)
+                      end
+                    end,
+                  })
+                end, { buffer = true, desc = "Compile LaTeX (lualatex + biber)" })
                 vim.keymap.set('n', '<leader>lv', '<cmd>VimtexView<cr>', { buffer = true, desc = "View PDF" })
                 vim.keymap.set('n', '<leader>li', '<cmd>VimtexInfo<cr>', { buffer = true, desc = "VimTeX Info" })
                 -- New: Clean auxiliary LaTeX files
