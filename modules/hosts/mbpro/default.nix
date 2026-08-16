@@ -19,7 +19,9 @@
           taps = {
             "homebrew/homebrew-core" = inputs.homebrew-core;
             "homebrew/homebrew-cask" = inputs.homebrew-cask;
+            "nohajc/homebrew-anylinuxfs" = inputs.homebrew-anylinuxfs;
           };
+          trust.taps = [ "nohajc/anylinuxfs" ];
           mutableTaps = false;
         };
       }

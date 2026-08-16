@@ -48,6 +48,11 @@
       flake = false;
     };
 
+    homebrew-anylinuxfs = {
+      url = "github:nohajc/homebrew-anylinuxfs";
+      flake = false;
+    };
+
     mac-app-util.url = "github:hraban/mac-app-util";
 
     nix-claude-code.url = "github:ryoppippi/nix-claude-code";

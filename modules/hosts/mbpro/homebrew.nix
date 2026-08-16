@@ -18,10 +18,12 @@
         "ghostty"
         "rar"
         "skim"
+        "raspberry-pi-imager"
       ];
       brews = [
         "imagemagick"
         "mas"
+        "nohajc/anylinuxfs/anylinuxfs"
       ];
       onActivation = {
         cleanup = "zap";

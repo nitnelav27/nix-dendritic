@@ -48,5 +48,6 @@
     };
 
     home-manager.users.vvh = self.homeModules.vvhMbpro;
+    home-manager.extraSpecialArgs = { hostname = config.networking.hostName; };
   };
 }
