@@ -2,7 +2,7 @@
 
   flake.darwinModules.mbproMounts = { config, lib, pkgs, ... }:
     let
-      serverIP = "10.27.115.4";
+      serverIP = "10.27.81.3";
       nfsMount = name: remotePath: mountPoint: {
         serviceConfig = {
           ProgramArguments = [
