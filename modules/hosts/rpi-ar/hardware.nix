@@ -41,6 +41,17 @@
     nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
     hardware.enableRedistributableFirmware = true;
 
+    ## generic-extlinux-compatible defaults to writing extlinux.conf +
+    ## copied kernel/initrd/dtbs to plain "/boot" — since only
+    ## "/boot/firmware" is a real mountpoint here (the SD card's FAT
+    ## partition; "/boot" itself is just a directory on the NVMe root
+    ## ext4 fs), that default silently lands everything somewhere the
+    ## Pi's firmware can never read (it has no ext4 support at all).
+    ## Point it at the actual firmware partition instead.
+    boot.loader.generic-extlinux-compatible.mirroredBoots = [
+      { path = "/boot/firmware"; }
+    ];
+
     ## Mainline kernel (cached on cache.nixos.org) instead of linux-rpi.
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     boot.kernel.sysctl."vm.mmap_rnd_bits" = lib.mkForce 28;
