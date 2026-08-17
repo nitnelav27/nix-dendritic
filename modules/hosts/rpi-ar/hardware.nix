@@ -16,22 +16,24 @@
     ## root instead of rpi-ar's.
     boot.loader.raspberry-pi.bootloader = "kernel";
 
+    ## NVMe-only layout: no SD card involved at all anymore. The Pi 5's boot
+    ## ROM reads FAT directly off whichever device BOOT_ORDER points it at
+    ## (SD, NVMe, USB, ...), so the firmware partition has to live on NVMe
+    ## itself -- it's not something the EEPROM can source from elsewhere.
+    ## nvme0n1p1 = firmware (2GB, FAT32), p2 = root (100GB), p3 = home (rest).
     fileSystems = {
       "/" = {
-        device = "/dev/disk/by-uuid/83d82ac0-edf1-49e8-9223-ae9897046d45";
+        device = "/dev/disk/by-uuid/8f70eead-f971-4bf7-b244-d87ee3bd93b6";
         fsType = "ext4";
       };
 
       "/home" = {
-        device = "/dev/disk/by-uuid/30c1beca-1b89-4ad5-939d-712e18d85bbf";
+        device = "/dev/disk/by-uuid/984146ed-1a3e-45f3-82c2-2f1fd241bab8";
         fsType = "ext4";
       };
 
-      ## NOTE: this UUID is from the pre-reflash SD card and WILL change once
-      ## you reflash with the new rpi-ar-installer image. Update it via
-      ## `blkid /dev/mmcblk0p1` after the fresh install boots.
       "/boot/firmware" = {
-        device = "/dev/disk/by-uuid/2178-694E";
+        device = "/dev/disk/by-uuid/1699-7A34";
         fsType = "vfat";
         options = [ "nofail" "fmask=0077" "dmask=0077" ];
       };
