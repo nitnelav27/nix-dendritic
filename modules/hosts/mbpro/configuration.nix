@@ -16,6 +16,12 @@
     };
     
     nix.settings.experimental-features = "nix-command flakes";
+    ## Without this, extra-substituters declared via a flake's `nixConfig`
+    ## (e.g. nixos-raspberrypi's cachix cache) get silently ignored -- Nix
+    ## refuses to trust a substituter suggested by an untrusted user, so
+    ## every build falls through to compiling from source instead of
+    ## downloading the prebuilt kernel/packages.
+    nix.settings.trusted-users = [ "root" "vvh" ];
 
     ## Local aarch64-linux builder VM, used to build things like the rpi-ar
     ## installer sd-image without needing a remote/emulated builder.

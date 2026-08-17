@@ -1,11 +1,20 @@
 { self, inputs, ... }: {
 
-  flake.nixosModules.rpiArHardware = { config, lib, pkgs, modulesPath, ... }: {
+  flake.nixosModules.rpiArHardware = { config, lib, pkgs, ... }: {
     imports = [
-      ## Pi 5 board profile: bcm2712 device trees, extlinux, disables GRUB,
-      ## initrd modules for NVMe/PCIe/RP1.
-      inputs.nixos-hardware.nixosModules.raspberry-pi-5
+      ## Pi 5 board profile from nixos-raspberrypi: downstream kernel (cached
+      ## via nixos-raspberrypi.cachix.org), bcm2712 device trees, NVMe/PCIe
+      ## initrd modules.
+      inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.base
+      inputs.nixos-raspberrypi.nixosModules.raspberry-pi-5.bluetooth
     ];
+
+    ## "kernel" mode: the Pi 5 firmware loads the kernel/initrd/DT directly
+    ## per NixOS generation from /boot/firmware. No U-Boot, no extlinux.conf,
+    ## no mirroredBoots -- this replaces the generic-extlinux-compatible +
+    ## nixos-hardware chain that was landing back on the installer's own
+    ## root instead of rpi-ar's.
+    boot.loader.raspberry-pi.bootloader = "kernel";
 
     fileSystems = {
       "/" = {
@@ -18,6 +27,9 @@
         fsType = "ext4";
       };
 
+      ## NOTE: this UUID is from the pre-reflash SD card and WILL change once
+      ## you reflash with the new rpi-ar-installer image. Update it via
+      ## `blkid /dev/mmcblk0p1` after the fresh install boots.
       "/boot/firmware" = {
         device = "/dev/disk/by-uuid/2178-694E";
         fsType = "vfat";
@@ -41,19 +53,6 @@
     nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
     hardware.enableRedistributableFirmware = true;
 
-    ## generic-extlinux-compatible defaults to writing extlinux.conf +
-    ## copied kernel/initrd/dtbs to plain "/boot" — since only
-    ## "/boot/firmware" is a real mountpoint here (the SD card's FAT
-    ## partition; "/boot" itself is just a directory on the NVMe root
-    ## ext4 fs), that default silently lands everything somewhere the
-    ## Pi's firmware can never read (it has no ext4 support at all).
-    ## Point it at the actual firmware partition instead.
-    boot.loader.generic-extlinux-compatible.mirroredBoots = [
-      { path = "/boot/firmware"; }
-    ];
-
-    ## Mainline kernel (cached on cache.nixos.org) instead of linux-rpi.
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     boot.kernel.sysctl."vm.mmap_rnd_bits" = lib.mkForce 28;
     boot.tmp.useTmpfs = true;
   };

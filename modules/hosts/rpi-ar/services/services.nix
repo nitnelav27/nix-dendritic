@@ -3,7 +3,7 @@
   flake.nixosModules.rpiArServices = { pkgs, lib, ... }: {
 
     boot = {
-      loader.generic-extlinux-compatible.configurationLimit = 5;
+      loader.raspberry-pi.configurationLimit = 5;
       kernelModules = [ ];
       extraModulePackages = [ ];
       supportedFilesystems = [ "nfs" ];
@@ -37,7 +37,7 @@
       };
       resolved = {
         enable = true;
-        fallbackDns = [ "1.1.1.1" "8.8.8.8" ];
+        settings.Resolve.FallbackDNS = [ "1.1.1.1" "8.8.8.8" ];
       };
     };
   };
