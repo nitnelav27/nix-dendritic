@@ -24,6 +24,7 @@
         "imagemagick"
         "mas"
         "nohajc/anylinuxfs/anylinuxfs"
+        "e2fsprogs"
       ];
       onActivation = {
         cleanup = "zap";

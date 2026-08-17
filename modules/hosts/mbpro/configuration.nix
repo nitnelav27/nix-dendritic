@@ -17,6 +17,10 @@
     
     nix.settings.experimental-features = "nix-command flakes";
 
+    ## Local aarch64-linux builder VM, used to build things like the rpi-ar
+    ## installer sd-image without needing a remote/emulated builder.
+    nix.linux-builder.enable = true;
+
     system.stateVersion = 6;
     networking.hostName = "mbpro";
 
