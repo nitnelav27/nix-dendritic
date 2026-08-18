@@ -16,8 +16,20 @@
               vimtex_view_method = if pkgs.stdenv.isDarwin then "skim" else "zathura";
               vimtex_compiler_method = "latexmk";
               vimtex_compiler_engine = "lualatex";
+              # Uses ~/.latexmkrc (declaratively managed, see
+              # extra/latex/latexmkrc) for the engine/biber rules; this
+              # just tells vimtex to run in continuous "watch" mode and
+              # keep quiet unless something goes wrong. Works unchanged
+              # for both beamer presentations and plain documents.
+              vimtex_compiler_latexmk = {
+                continuous = 1;
+                callback = 1;
+              };
               tex_conceal = "abdmg";
               vimtex_quickfix_open_on_warning = 0;
+              # Only pop the quickfix window on real errors, not warnings
+              # (biblatex/polyglossia are chatty on both doc types).
+              vimtex_quickfix_mode = 2;
             };
             clipboard = {
               enable = true;
@@ -98,33 +110,19 @@
                 pattern = "tex",
                 callback = function()
                 local opts = { buffer = true, silent = true }
-                vim.keymap.set('n', '<leader>ll', function()
-                  local file = vim.fn.expand('%:t')
-                  local jobname = vim.fn.expand('%:t:r')
-                  local dir = vim.fn.expand('%:p:h')
-                  local cmd = string.format(
-                    'cd %s && lualatex -interaction=nonstopmode -synctex=1 %s && biber %s && lualatex -interaction=nonstopmode -synctex=1 %s && lualatex -interaction=nonstopmode -synctex=1 %s',
-                    vim.fn.shellescape(dir),
-                    vim.fn.shellescape(file),
-                    vim.fn.shellescape(jobname),
-                    vim.fn.shellescape(file),
-                    vim.fn.shellescape(file)
-                  )
-                  vim.notify('Compiling ' .. file .. ' (lualatex -> biber -> lualatex x2)...', vim.log.levels.INFO)
-                  vim.fn.jobstart(cmd, {
-                    on_exit = function(_, code)
-                      if code == 0 then
-                        vim.notify('LaTeX compile succeeded', vim.log.levels.INFO)
-                      else
-                        vim.notify('LaTeX compile failed (exit ' .. code .. ')', vim.log.levels.ERROR)
-                      end
-                    end,
-                  })
-                end, { buffer = true, desc = "Compile LaTeX (lualatex + biber)" })
+                -- Compilation is delegated entirely to vimtex's own
+                -- latexmk integration (see vimtex_compiler_method/
+                -- vimtex_compiler_latexmk below), backed by the
+                -- declarative ~/.latexmkrc from extra/latex/latexmkrc.
+                -- latexmk auto-detects biber/bibtex per-document via the
+                -- .bcf/.aux files, so the same mapping compiles plain
+                -- documents (biblatex+biber citations) and presentations
+                -- (usually no bibliography) without any special-casing.
+                vim.keymap.set('n', '<leader>ll', '<cmd>VimtexCompile<cr>', { buffer = true, desc = "Compile LaTeX (latexmk)" })
                 vim.keymap.set('n', '<leader>lv', '<cmd>VimtexView<cr>', { buffer = true, desc = "View PDF" })
                 vim.keymap.set('n', '<leader>li', '<cmd>VimtexInfo<cr>', { buffer = true, desc = "VimTeX Info" })
-                -- New: Clean auxiliary LaTeX files
                 vim.keymap.set('n', '<leader>lc', '<cmd>VimtexClean<cr>', { buffer = true, desc = "Clean Aux Files" })
+                vim.keymap.set('n', '<leader>ls', '<cmd>VimtexStop<cr>', { buffer = true, desc = "Stop Compilation" })
               end})
 
               -- 3. Configure Python DAP

@@ -79,7 +79,14 @@
           recursive = true;
           source = self + "/extra/figlet_fonts";
           target = ".config/figlet_fonts";
-        }; 
+        };
+        latexmkrc = {
+          enable = true;
+          executable = false;
+          recursive = false;
+          source = self + "/extra/latex/latexmkrc";
+          target = ".latexmkrc";
+        };
       };
       ## Silence warning about home-manager and nixpkgs mismatch
       enableNixpkgsReleaseCheck = false;

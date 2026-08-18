@@ -1,0 +1,29 @@
+# ~/.latexmkrc — managed declaratively via home-manager (see
+# modules/hosts/utdt10141/home.nix, home.file.latexmkrc), sourced from
+# extra/latex/latexmkrc in this flake.
+#
+# Goal: one engine/rule set that works unmodified for both plain documents
+# (article/report with biblatex+biber citations, like the syllabus) and
+# presentations (beamer, usually no bibliography), whether invoked from
+# vimtex (`vimtex_compiler_method = "latexmk"`) or straight from a shell.
+#
+# LuaLaTeX is required repo-wide because fontspec/polyglossia (used for
+# Spanish typesetting) aren't pdflatex-compatible.
+$pdf_mode = 1;                      # produce PDF
+$lualatex = 'lualatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S';
+$pdflatex = $lualatex;              # in case a doc forces pdflatex mode
+
+# Bibliography: latexmk auto-detects biber (via the .bcf file biblatex
+# writes) vs. classic bibtex per-document, and simply skips this step
+# for documents/presentations with no \addbibresource — no manual
+# "run biber then rerun lualatex twice" logic needed.
+$biber = 'biber --overwrite %O %S';
+$bibtex_use = 2;
+
+# Viewer used for `latexmk -pv`/`-pvc` outside of vimtex (vimtex drives
+# its own viewer via vimtex_view_method = zathura).
+$pdf_previewer = 'zathura %O %S';
+
+# Keep latexmk's own aux-file bookkeeping, but also let `latexmk -c`
+# clean up the biber/biblatex byproducts.
+push @generated_exts, 'bbl', 'bcf', 'run.xml', 'synctex.gz';

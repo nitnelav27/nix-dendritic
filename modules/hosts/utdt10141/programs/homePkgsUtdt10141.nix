@@ -70,6 +70,7 @@
       #   ];
       # })
       # quarto
+      qpdf ## extract pages from a pdf
     ];
 
     xdg.mimeApps.defaultApplications."application/pdf" = "sioyek.desktop";
