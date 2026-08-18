@@ -9,9 +9,8 @@
 #
 # LuaLaTeX is required repo-wide because fontspec/polyglossia (used for
 # Spanish typesetting) aren't pdflatex-compatible.
-$pdf_mode = 1;                      # produce PDF
+$pdf_mode = 4;                      # produce PDF via lualatex (latexmk's native mode)
 $lualatex = 'lualatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S';
-$pdflatex = $lualatex;              # in case a doc forces pdflatex mode
 
 # Bibliography: latexmk auto-detects biber (via the .bcf file biblatex
 # writes) vs. classic bibtex per-document, and simply skips this step

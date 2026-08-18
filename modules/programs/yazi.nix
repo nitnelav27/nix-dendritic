@@ -37,13 +37,17 @@
 
         opener = {
           edit = [
-            { run = ''nvim "$@"''; block = true; desc = "Neovim"; }
+            # Yazi's opener `run` field uses %s/%S placeholders since the
+            # $@ shell-substitution syntax was deprecated in yazi v25.12.29;
+            # $@ no longer gets a file substituted in, so nvim opened with
+            # no args and showed its start screen instead of the file.
+            { run = "nvim %s"; block = true; desc = "Neovim"; }
           ];
           play = [
-            { run = ''mpv "$@"''; orphan = true; desc = "MPV"; }
+            { run = "mpv %s"; orphan = true; desc = "MPV"; }
           ];
           pdf_reader = [
-            { run = ''zathura "$@"''; desc = "Zathura"; block = true; }
+            { run = "zathura %s"; desc = "Zathura"; block = true; }
           ];
         };
 
