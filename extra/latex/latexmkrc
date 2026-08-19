@@ -16,7 +16,8 @@ $lualatex = 'lualatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S
 # writes) vs. classic bibtex per-document, and simply skips this step
 # for documents/presentations with no \addbibresource — no manual
 # "run biber then rerun lualatex twice" logic needed.
-$biber = 'biber --overwrite %O %S';
+$biber = 'biber %O %S';             # biber overwrites its .bbl by default; --overwrite
+                                     # is not a recognized biber option and hard-errors
 $bibtex_use = 2;
 
 # Viewer used for `latexmk -pv`/`-pvc` outside of vimtex (vimtex drives
