@@ -12,7 +12,7 @@
         "zoom"
         #"adobe-acrobat-reader"
         "mactex"
-        "whatsapp"
+        #"whatsapp"
         "via"
         "lm-studio"
         "ghostty"

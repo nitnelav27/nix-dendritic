@@ -4,7 +4,7 @@
 
     boot = {
       loader.raspberry-pi.configurationLimit = 5;
-      kernelModules = [ ];
+      kernelModules = [ "nfsd" ];
       extraModulePackages = [ ];
       supportedFilesystems = [ "nfs" ];
     };

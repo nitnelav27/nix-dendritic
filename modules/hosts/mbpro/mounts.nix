@@ -11,7 +11,7 @@
             ''
             until /sbin/ping -c 1 -t 5 ${serverIP}; do sleep 5; done
             /sbin/mount | grep -q "${mountPoint}" || \
-            /sbin/mount_nfs -o resvport,soft,bg,tcp,noatime,intr,nfsvers=3,noowners ${serverIP}:${remotePath} ${mountPoint}
+            /sbin/mount_nfs -o soft,bg,tcp,noatime,intr,nfsvers=4.2,noowners ${serverIP}:${remotePath} ${mountPoint}
             ''
           ];
           RunAtLoad = true;
@@ -25,7 +25,13 @@
         echo "Creating NFS mount points..."
         mkdir -p /Users/vvh/{.decreto,dump,docs}
         mkdir -p /Users/vvh/nas/{calibre,data,results}
-        chown -R vvh:staff /Users/vvh/nas
+        for d in /Users/vvh/nas/calibre /Users/vvh/nas/data /Users/vvh/nas/results; do
+          if /sbin/mount | grep -q " on $d "; then
+            echo "$d already mounted -- skipping chown"
+          else
+            chown -R vvh:staff "$d"
+          fi
+        done
       '';
 
       launchd.daemons = {
