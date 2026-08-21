@@ -11,8 +11,6 @@
       };
     };
     
-    imports = [ inputs.solaar.nixosModules.default ];
-
     hardware = {
       bluetooth.enable = true;
       graphics = {
@@ -123,10 +121,6 @@
           };
         };
       };
-      solaar = {
-        enable = true;
-        batteryIcons = "solaar";
-      };
       hardware.openrgb = {
         enable = true;
         package = pkgs.openrgb-with-all-plugins;
@@ -205,6 +199,14 @@
             "__GLX_VENDOR_LIBRARY_NAME=nvidia"
           ];
         };
+      };
+    };
+
+    programs.solaar = {
+      enable = true;
+      userService = {
+        enable = true;
+        batteryIcons = "solaar";
       };
     };
 
