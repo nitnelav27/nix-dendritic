@@ -2,12 +2,12 @@
 
   flake.nixosModules.rpiCCPServices = { pkgs, lib, ...}: {
 
-    ## Boot: the Pi 5 chain is EEPROM -> firmware -> U-Boot -> extlinux.
-    ## There is no GRUB and no EFI here. The nixos-hardware profile already sets
-    ## boot.loader.generic-extlinux-compatible.enable = true, so this host must
-    ## NOT import self.nixosModules.commonServices (which forces GRUB on).
+    ## Boot: the Pi 5 firmware loads the kernel directly per generation
+    ## (boot.loader.raspberry-pi.bootloader = "kernel" in hardware.nix).
+    ## There is no GRUB and no EFI here, so this host must NOT import
+    ## self.nixosModules.commonServices (which forces GRUB on).
     boot = {
-      loader.generic-extlinux-compatible.configurationLimit = 5;
+      loader.raspberry-pi.configurationLimit = 5;
       kernelModules = [ ];
       extraModulePackages = [ ];
       ## initrd modules are supplied by the raspberry-pi-5 profile.
@@ -48,7 +48,7 @@
       };
       resolved = {
         enable = true;
-        fallbackDns = [
+        settings.Resolve.FallbackDNS = [
           "1.1.1.1"
           "8.8.8.8"
         ];
