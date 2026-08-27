@@ -42,6 +42,12 @@
           user = "vvh";
           identityFile = "~/.ssh/id_ed25519";
         };
+        "nas-ar" = {
+          hostname = "10.27.81.4";
+          port = 1186;
+          user = "vvh";
+          identityFile = "~/.ssh/id_ed25519";
+        };
       };
     };
   };
