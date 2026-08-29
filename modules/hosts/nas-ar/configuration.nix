@@ -9,7 +9,7 @@
       self.nixosModules.commonConfig
       self.nixosModules.nasArServices
       self.nixosModules.nasArFirewall
-      #self.nixosModules.nasArMounts
+      self.nixosModules.nasArMounts
       self.nixosModules.nasArSamba
       self.nixosModules.nasArNfs
       self.nixosModules.nasArGithubToken
