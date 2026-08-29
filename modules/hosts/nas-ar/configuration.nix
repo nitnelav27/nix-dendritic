@@ -12,6 +12,7 @@
       self.nixosModules.nasArMounts
       self.nixosModules.nasArSamba
       self.nixosModules.nasArNfs
+      self.nixosModules.nasArGithubToken
     ];
 
     time.timeZone = "America/Argentina/Buenos_Aires";
