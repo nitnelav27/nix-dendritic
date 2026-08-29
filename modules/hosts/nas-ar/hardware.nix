@@ -34,6 +34,7 @@
         device = "/dev/disk/by-uuid/456120f5-86c4-4118-a58c-42697329d31e";
         fsType = "ext4";
       };
+<<<<<<< HEAD
       ## /storage was a single ext4 disk (piExternal) until TORR + piExternal
       ## were combined into one LVM volume group ("storage-vg") to pool their
       ## capacity. See modules/hosts/nas-ar/services/mounts.nix.
@@ -41,6 +42,12 @@
         device = "/dev/storage-vg/storage-lv";
         fsType = "ext4";
       };
+=======
+      # "/storage" = {
+      #   device = "/dev/disk/by-uuid/cf30920a-71d9-4458-8468-1650e721980c";
+      #   fsType = "ext4";
+      # };
+>>>>>>> 8f7e5f6b9072a48bfcde30f42dfc65745f7b3906
     };
 
     swapDevices = [ ];
