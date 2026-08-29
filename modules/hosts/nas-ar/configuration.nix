@@ -61,6 +61,7 @@
       fastfetch
       acl
       nfs-utils
+      lvm2
     ];
 
     ## DO NOT TOUCH THIS
