@@ -61,6 +61,7 @@
       fastfetch
       acl
       nfs-utils
+      lvm2 ## CLI tools (pvs/vgs/lvs/...) for managing storage-vg
     ];
 
     ## DO NOT TOUCH THIS
