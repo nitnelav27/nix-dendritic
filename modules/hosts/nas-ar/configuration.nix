@@ -13,6 +13,10 @@
       self.nixosModules.nasArSamba
       self.nixosModules.nasArNfs
       self.nixosModules.nasArGithubToken
+      self.nixosModules.nasArArr 
+      self.nixosModules.nasArQbittorrent
+      self.nixosModules.nasArGraphics
+      self.nixosModules.nasArStreaming
     ];
 
     time.timeZone = "America/Argentina/Buenos_Aires";

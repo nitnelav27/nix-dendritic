@@ -13,6 +13,9 @@
         4001
         4002
         20048
+        ### NFS ENDS HERE
+        8080 ## qbittorrent
+        8086 ## jellyfin
       ];
     in
     {
