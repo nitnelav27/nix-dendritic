@@ -54,5 +54,17 @@
         ReadWritePaths = [ "/home/vvh/appData/sonarr" ];
       };
     };
+
+    ## These dataDirs/ReadWritePaths must exist before the services start --
+    ## on a fresh host nothing else creates them, which is what caused
+    ## 226/NAMESPACE (ReadWritePaths source missing) on first boot.
+    systemd.tmpfiles.rules = [
+      "d /home/vvh/appData 0755 vvh vvh -"
+      "d /home/vvh/appData/radarr 0755 vvh vvh -"
+      "d /home/vvh/appData/sonarr 0755 vvh vvh -"
+      "d /home/vvh/appData/lidarr 0755 vvh vvh -"
+      "d /home/vvh/appData/prowlarr 0755 vvh vvh -"
+      "d /home/vvh/appData/bazarr 0755 vvh vvh -"
+    ];
   };
 }

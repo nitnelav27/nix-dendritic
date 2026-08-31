@@ -25,5 +25,12 @@
       # If uploads still fail, also relax these:
       ReadWritePaths = [ "/home/vvh/appData" "/tmp" ];
     };
+
+    ## qbittorrent-nox aborts on a fresh host if its WorkingDirectory /
+    ## profileDir doesn't already exist -- nothing else creates it.
+    systemd.tmpfiles.rules = [
+      "d /home/vvh/appData 0755 vvh vvh -"
+      "d /home/vvh/appData/qBittorrent 0755 vvh vvh -"
+    ];
   };
 }

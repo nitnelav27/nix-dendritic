@@ -30,5 +30,17 @@
       #   };
       # };
     };
+
+    ## jellyfin's dataDir/configDir/cacheDir/logDir must exist before it
+    ## starts -- missing on a fresh host is exactly what produced
+    ## 200/CHDIR (jellyfin couldn't chdir into its WorkingDirectory).
+    systemd.tmpfiles.rules = [
+      "d /home/vvh/appData 0755 vvh vvh -"
+      "d /home/vvh/appData/jellyfin 0755 vvh vvh -"
+      "d /home/vvh/appData/jellyfin/data 0755 vvh vvh -"
+      "d /home/vvh/appData/jellyfin/config 0755 vvh vvh -"
+      "d /home/vvh/appData/jellyfin/cache 0755 vvh vvh -"
+      "d /home/vvh/appData/jellyfin/log 0755 vvh vvh -"
+    ];
   };
 }
