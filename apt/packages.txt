@@ -1,0 +1,6 @@
+# Regenerate this on utdt10141 with:
+#   apt-mark showmanual > apt/packages.txt
+#
+# This placeholder is NOT a real snapshot -- it hasn't been generated from
+# the actual machine yet. Run the command above on utdt10141 and commit
+# the real output over this file before trusting bootstrap.sh.

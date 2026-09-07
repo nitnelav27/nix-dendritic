@@ -19,17 +19,19 @@
 
   flake.homeModules.vvhUtdt10141 = { pkgs, ... }: {
 
-    imports = [ 
+    imports = [
       self.homeModules.vvhShell
       self.homeModules.vvhNvf
       self.homeModules.vvhTerminals
-      self.homeModules.vvhHomeBasePkgs
+      self.homeModules.utdt10141NixTools
       self.homeModules.vvhYazi
       self.homeModules.vvhGit
       self.homeModules.utdt10141HomePkgs
-      self.homeModules.vvhVSCode   
+      self.homeModules.vvhVSCode
+      self.homeModules.vvhDirenv
       self.homeModules.utdt10141GnomeConfig
       self.homeModules.utdt10141Solaar
+      self.homeModules.vvhEmacs
     ];
 
     targets.genericLinux = {
@@ -45,13 +47,10 @@
         CHROME_DEVEL_SANDBOX = "/usr/local/bin/chrome-sandbox";
       };
       file = {
-        # doom = {
-        #   enable = true;
-        #   executable = false;
-        #   recursive = true;
-        #   source = self + "/extra/doom";
-        #   target = ".config/doom";
-        # };
+        # Doom's ~/.config/doom home.file entry lived here; it's been
+        # replaced by the vvhEmacs module (modules/programs/emacs.nix),
+        # which manages ~/.config/emacs (extra/emacs) instead of
+        # ~/.config/doom (extra/doom) -- Doom itself is no longer used.
         matplotlib = {
           enable = true;
           executable = false;

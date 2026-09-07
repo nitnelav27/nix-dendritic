@@ -1,0 +1,35 @@
+# Allow unprivileged user-namespace creation for Nix-built bwrap binaries.
+#
+# Ubuntu 24.04+ restricts unprivileged user namespace creation via AppArmor
+# by default (kernel.apparmor_restrict_unprivileged_userns=1). Nix-built
+# binaries carry no AppArmor profile, so anything that shells out to bwrap
+# to build a sandbox at runtime -- e.g. nixpkgs' `zoom-us`, which is a
+# buildFHSEnv package -- fails with:
+#
+#   bwrap: setting up uid map: Permission denied
+#
+# This profile grants just the `userns` permission to any bwrap binary
+# living under /nix/store, and leaves it otherwise unconfined, so the
+# Ubuntu-wide restriction stays in effect for everything else.
+#
+# Install:
+#   sudo cp extra/apparmor/nix-bwrap /etc/apparmor.d/nix-bwrap
+#   sudo apparmor_parser -r /etc/apparmor.d/nix-bwrap
+#
+# Verify it loaded:
+#   sudo aa-status | grep nix-bwrap
+#
+# Remove if you ever want to revert:
+#   sudo rm /etc/apparmor.d/nix-bwrap
+#   sudo systemctl reload apparmor
+#
+# Reference: https://ubuntu.com/blog/ubuntu-23-10-restricted-unprivileged-user-namespaces
+
+abi <abi/4.0>,
+include <tunables/global>
+
+profile nix-bwrap /nix/store/*/bin/bwrap flags=(unconfined) {
+  userns,
+
+  include if exists <local/nix-bwrap>
+}
