@@ -16,6 +16,7 @@
       windsurf
       wget
       claude-code
+      postgresql
     ];
   };
 }
