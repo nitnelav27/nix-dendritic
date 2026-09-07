@@ -70,8 +70,13 @@
 ;; --- which-key: shows available bindings after a prefix key ---------------
 ;; This is what makes `SPC' feel discoverable instead of requiring the
 ;; whole leader map to be memorized up front.
+;; Nix-installed packages have no package.el autoloads, so `which-key-mode'
+;; must be called from `:config' (after use-package's own `require'), not
+;; `:init' (which runs before the package is loaded and would hit
+;; void-function) -- same fix as everywhere else in this config.
 (use-package which-key
-  :init (which-key-mode 1)
-  :config (setq which-key-idle-delay 0.4))
+  :config
+  (setq which-key-idle-delay 0.4)
+  (which-key-mode 1))
 
 (provide 'core-evil)

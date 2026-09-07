@@ -24,14 +24,9 @@
       grim
       grimblast
       mako
-      #nwg-displays
-      #nwg-look
       scrot
-      #slack
       slurp
       via
-      #zoom-us
-      #google-chrome
       claude-code
       texlab
       ltex-ls-plus ## LSP language server for latex, referenced by vscode.nix
@@ -52,6 +47,30 @@
       #   ];
       # })
       # quarto
+      teams-for-linux 
+      languagetool
+      enchant 
+      uv 
+      tldr
+      fd
+      ### Fonts start here
+      barlow
+      fira
+      hasklig
+      source-code-pro
+      material-design-icons
+      material-icons
+      noto-fonts
+      roboto
+      ubuntu-sans
+      ubuntu-sans-mono
+      weather-icons
+      font-awesome
+      noto-fonts-color-emoji
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.meslo-lg
+      nerd-fonts.symbols-only
+      ### End of fonts
     ];
 
     ## sioyek used to be the default PDF handler; it's gone from Nix now

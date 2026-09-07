@@ -6,13 +6,20 @@
 ;; --- modeline --------------------------------------------------------------
 ;; doom-modeline is, like doom-themes, a standalone package -- it's what
 ;; Doom's `modeline' module wraps, so this is a direct port.
+;; Packages here come from Nix, not package.el, so there are no autoloads
+;; for their mode-enabling functions. `:init' runs BEFORE the package is
+;; loaded (that's the whole point of :init), so calling a mode function
+;; there is void-function; `:config' runs after use-package's own
+;; `require', once the function actually exists. This file used to call
+;; several such functions from `:init' -- every one of them is now in
+;; `:config' instead.
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
   :config
   (setq doom-modeline-height 25
         doom-modeline-icon t
         doom-modeline-major-mode-icon t
-        doom-modeline-buffer-file-name-style 'truncate-with-project))
+        doom-modeline-buffer-file-name-style 'truncate-with-project)
+  (doom-modeline-mode 1))
 
 ;; --- quit confirmation -----------------------------------------------------
 ;; Doom's `doom-quit' module just asks "are you sure?" with a random quip.
@@ -70,6 +77,7 @@
   (setq popper-reference-buffers
         '("\\*Messages\\*" "\\*Warnings\\*" "Output\\*$" "\\*Async Shell Command\\*"
           help-mode compilation-mode "\\*eldoc\\*"))
+  :config
   (popper-mode 1)
   (popper-echo-mode 1))
 
@@ -101,6 +109,6 @@
 ;; (which itself wraps a fork of persp-mode).
 (use-package perspective
   :custom (persp-mode-prefix-key (kbd "C-c M-p"))
-  :init (persp-mode 1))
+  :config (persp-mode 1))
 
 (provide 'core-ui)

@@ -16,7 +16,7 @@
   ## right name fast.
   flake.homeModules.vvhEmacs = { config, pkgs, lib, ... }:
     let
-      emacsPkg = pkgs.emacs30-pgtk; # pgtk = native Wayland support, matches hyprland.nix/niri.nix
+      emacsPkg = pkgs.emacs-pgtk; # pgtk = native Wayland support, matches hyprland.nix/niri.nix
       emacsWithPackages = (pkgs.emacsPackagesFor emacsPkg).emacsWithPackages (epkgs: with epkgs; [
         ## :completion
         vertico vertico-posframe orderless marginalia consult embark embark-consult
@@ -24,7 +24,7 @@
         company company-box
 
         ## :ui
-        doom-themes doom-modeline dashboard hl-todo ligature minimap diff-hl
+        doom-themes doom-modeline dashboard beacon hl-todo ligature minimap diff-hl
         popper unicode-fonts perspective
 
         ## :editor
@@ -64,8 +64,8 @@
         ## elsewhere in this repo. nil (nix) and pyright (python) come from
         ## utdt10141NixTools already -- see nixTools.nix -- and texlab
         ## (latex) from utdt10141HomePkgs -- see homePkgsUtdt10141.nix.
-        nodePackages.bash-language-server
-        nodePackages.yaml-language-server
+        bash-language-server
+        yaml-language-server
         clang-tools # clangd, for :lang cc
 
         ## mu/mbsync back email.el's mu4e block. mu4e itself ships as elisp

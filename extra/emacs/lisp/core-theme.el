@@ -35,7 +35,10 @@
   :config
   (load-theme 'doom-Iosvkem t)
   ;; doom-themes' own tweak for org-mode fontification, matching what the
-  ;; doom `org' module enables automatically.
+  ;; doom `org' module enables automatically. `doom-themes-org-config' lives
+  ;; in a separate file (doom-themes-ext-org.el) that isn't autoloaded just
+  ;; by requiring `doom-themes' itself, so it needs an explicit `require'.
+  (require 'doom-themes-ext-org)
   (doom-themes-org-config))
 
 ;; Doom's "load a new theme" binding used counsel-load-theme (Ivy). We use

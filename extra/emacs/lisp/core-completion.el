@@ -8,15 +8,20 @@
 ;; (file sizes, doc strings, key bindings) you'd get from Helm/Ivy for free;
 ;; consult and embark are the "search everything" / "act on the thing at
 ;; point" commands built on top.
+;; Packages here come from Nix, not package.el, so there are no autoloads
+;; for their mode-enabling functions. `:init' runs before the package is
+;; loaded, so calling a mode function there is void-function; the fix is
+;; `:config' (runs after use-package's own `require') for every direct
+;; mode-enable call in this file.
 (use-package vertico
-  :init (vertico-mode 1))
+  :config (vertico-mode 1))
 
 ;; +childframe: Doom renders the vertico minibuffer in a floating child
 ;; frame near the cursor instead of the actual minibuffer at the bottom.
 ;; vertico-posframe is the standalone package for exactly that.
 (use-package vertico-posframe
   :after vertico
-  :init (vertico-posframe-mode 1))
+  :config (vertico-posframe-mode 1))
 
 ;; +icons: file/command icons next to each candidate.
 (use-package nerd-icons-completion
@@ -31,7 +36,7 @@
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package marginalia
-  :init (marginalia-mode 1))
+  :config (marginalia-mode 1))
 
 (use-package consult
   :bind (("C-s"     . consult-line)

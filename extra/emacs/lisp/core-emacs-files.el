@@ -8,11 +8,15 @@
 ;; +dirvish: Doom's dired module can swap in dirvish, a more modern
 ;; file-manager-style overlay on dired. We enable it directly rather than
 ;; going through vanilla dired first.
+;; Nix-installed packages have no package.el autoloads, so mode-enabling
+;; calls need to be in `:config' (after use-package's own `require'), not
+;; `:init' (runs before load, hits void-function) -- same fix as elsewhere
+;; in this config.
 (use-package dirvish
-  :init (dirvish-override-dired-mode)
   :custom
   (dirvish-mode-line-format '(:left (sort symlink) :right (omit yank index)))
   :config
+  (dirvish-override-dired-mode)
   (dirvish-peek-mode 1)) ; preview file at point in a side window
 
 ;; +icons: file-type icons in dired/dirvish, via nerd-icons (no need for
@@ -43,7 +47,7 @@
 (use-package undo-fu)
 
 (use-package undo-fu-session
-  :init (global-undo-fu-session-mode 1))
+  :config (global-undo-fu-session-mode 1))
 
 ;; --- vc: version control + diff-hl already covers the fringe gutter -------
 ;; (diff-hl itself lives in core-ui.el next to the rest of the "gutter"
