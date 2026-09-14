@@ -344,7 +344,25 @@
                 enable = true;
               };
               lspconfig.enable = true;
-              servers.texlab.enable = true;
+              # texlab ships its own build command independent of vimtex,
+              # defaulting to `latexmk -pdf ...` which forces pdflatex and
+              # ignores ~/.latexmkrc's $pdf_mode = 4 (lualatex) — breaks any
+              # doc using fontspec/polyglossia (e.g. beamer + metropolis).
+              # Point it at the same lualatex-via-latexmk rule instead, so
+              # texlab's build-on-save agrees with vimtex/<leader>ll and the
+              # declarative extra/latex/latexmkrc.
+              servers.texlab = {
+                enable = true;
+                settings = {
+                  texlab = {
+                    build = {
+                      executable = "latexmk";
+                      args = [ "-lualatex" "-interaction=nonstopmode" "-synctex=1" "%f" ];
+                      onSave = true;
+                    };
+                  };
+                };
+              };
             };
             languages = {
               enableFormat = true;

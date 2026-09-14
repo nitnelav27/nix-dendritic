@@ -25,7 +25,11 @@
 
     ## Local aarch64-linux builder VM, used to build things like the rpi-ar
     ## installer sd-image without needing a remote/emulated builder.
-    nix.linux-builder.enable = true;
+    ## Temporarily disabled 2026-09-13: virtiofsd's libseccomp dependency
+    ## fails to build on aarch64-darwin after the nixpkgs bump to
+    ## eaad089433ca2bb662274377d33df3d0e51ef28b (2026-09-11). Re-enable once
+    ## upstream nixpkgs/virtiofsd fixes the Darwin build.
+    nix.linux-builder.enable = false;
 
     system.stateVersion = 6;
     networking.hostName = "mbpro";

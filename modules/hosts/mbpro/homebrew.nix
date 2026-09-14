@@ -19,12 +19,15 @@
         "rar"
         "skim"
         "raspberry-pi-imager"
+        "google-chrome"
       ];
       brews = [
         "imagemagick"
         "mas"
         "nohajc/anylinuxfs/anylinuxfs"
         "e2fsprogs"
+        "postgresql"
+        "node"
       ];
       onActivation = {
         cleanup = "zap";
