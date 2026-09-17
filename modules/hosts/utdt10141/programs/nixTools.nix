@@ -10,6 +10,8 @@
   ##   - ripgrep, fzf      -> back fzf-lua inside nvf.nix
   ##   - nixpkgs-fmt, nil  -> used to edit *this* flake itself
   ##   - shellcheck        -> nvf.nix bash linting
+  ##   - rclone            -> driven by the hetzner-sync systemd unit
+  ##                          (hetznerSync.nix)
   ## Everything homeBasePkgs used to provide beyond this (btop, fastfetch,
   ## eza, tldr, duf, aspell/hunspell + dicts, bat, dialog, dig, iperf,
   ## killall, tree, unzip, zip, cliphist, and all the fonts) moved to
@@ -24,6 +26,7 @@
       fzf
       nixpkgs-fmt
       shellcheck
+      rclone
     ];
   };
 }

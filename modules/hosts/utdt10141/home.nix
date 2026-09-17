@@ -3,16 +3,16 @@
   flake.homeConfigurations.utdt10141Home = inputs.home-manager.lib.homeManagerConfiguration {
     pkgs = import inputs.nixpkgs {
       system = "x86_64-linux";
-      config.allowUnfree = true; 
+      config.allowUnfree = true;
     };
-    
+
     extraSpecialArgs = { hostname = "utdt10141"; };
 
     modules = [
       self.homeModules.vvhUtdt10141
       {
-        home.username = "vvh";           
-        home.homeDirectory = "/home/vvh"; 
+        home.username = "vvh";
+        home.homeDirectory = "/home/vvh";
       }
     ];
   };
@@ -32,6 +32,7 @@
       self.homeModules.utdt10141GnomeConfig
       self.homeModules.utdt10141Solaar
       self.homeModules.vvhEmacs
+      self.homeModules.utdt10141HetznerSync
     ];
 
     targets.genericLinux = {

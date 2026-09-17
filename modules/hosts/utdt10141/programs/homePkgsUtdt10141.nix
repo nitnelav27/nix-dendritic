@@ -71,6 +71,7 @@
       nerd-fonts.meslo-lg
       nerd-fonts.symbols-only
       ### End of fonts
+      texliveFullWithDocs
     ];
 
     ## sioyek used to be the default PDF handler; it's gone from Nix now
