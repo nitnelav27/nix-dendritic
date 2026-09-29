@@ -51,9 +51,10 @@
           # systemd guarantees only one instance of this oneshot service runs
           # at a time, so any bisync lock file still present when we start is
           # guaranteed stale (left over from a run that was killed -- e.g. by
-          # TimeoutStartSec, or an interrupted home-manager switch) rather than
-          # a real concurrent run. Clear it so bisync's safety check doesn't
-          # permanently wedge the job.
+          # TimeoutStartSec, a network drop, or an interrupted home-manager
+          # switch) rather than a real concurrent run. Clear it so bisync's
+          # safety check doesn't permanently wedge the job on every future
+          # tick until someone notices and deletes it by hand.
           if [ -d "${bisyncCacheDir}" ]; then
             find "${bisyncCacheDir}" -name '*.lck' -delete
           fi
@@ -71,6 +72,8 @@
               --recover \
               --compare size,modtime,checksum \
               --resilient \
+              --retries 3 \
+              --low-level-retries 10 \
               "''${extra_args[@]}" >> "${logFile}" 2>&1; then
             touch "$resync_marker"
             echo "$(ts) SUCCESS" >> "${logFile}"
