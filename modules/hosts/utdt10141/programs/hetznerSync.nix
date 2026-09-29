@@ -7,6 +7,7 @@
       stateDir = "${config.home.homeDirectory}/.local/state/hetzner-sync";
       logFile = "${stateDir}/sync.log";
       rcloneConfPath = "${stateDir}/rclone.conf";
+      bisyncCacheDir = "${config.home.homeDirectory}/.cache/rclone/bisync";
 
       rcloneConfTemplate = pkgs.writeText "hetzner-rclone.conf" ''
         [${remoteName}]
@@ -39,13 +40,23 @@
 
       syncScript = pkgs.writeShellApplication {
         name = "hetzner-sync";
-        runtimeInputs = [ pkgs.rclone pkgs.coreutils ];
+        runtimeInputs = [ pkgs.rclone pkgs.coreutils pkgs.findutils ];
         text = ''
           set -uo pipefail
           mkdir -p "${stateDir}"
           install -m 600 "${rcloneConfTemplate}" "${rcloneConfPath}"
           resync_marker="${stateDir}/.resynced"
           ts() { date -Is; }
+
+          # systemd guarantees only one instance of this oneshot service runs
+          # at a time, so any bisync lock file still present when we start is
+          # guaranteed stale (left over from a run that was killed -- e.g. by
+          # TimeoutStartSec, or an interrupted home-manager switch) rather than
+          # a real concurrent run. Clear it so bisync's safety check doesn't
+          # permanently wedge the job.
+          if [ -d "${bisyncCacheDir}" ]; then
+            find "${bisyncCacheDir}" -name '*.lck' -delete
+          fi
 
           extra_args=()
           if [ ! -f "$resync_marker" ]; then

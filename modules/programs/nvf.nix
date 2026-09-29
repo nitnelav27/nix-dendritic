@@ -15,7 +15,7 @@
               mapleader = " ";
               vimtex_view_method = if pkgs.stdenv.isDarwin then "skim" else "zathura";
               vimtex_compiler_method = "latexmk";
-              vimtex_compiler_engine = "lualatex";
+              # Engine (lualatex) comes from $pdf_mode = 4 in ~/.latexmkrc.
               # Uses ~/.latexmkrc (declaratively managed, see
               # extra/latex/latexmkrc) for the engine/biber rules; this
               # just tells vimtex to run in continuous "watch" mode and
@@ -348,9 +348,12 @@
               # defaulting to `latexmk -pdf ...` which forces pdflatex and
               # ignores ~/.latexmkrc's $pdf_mode = 4 (lualatex) — breaks any
               # doc using fontspec/polyglossia (e.g. beamer + metropolis).
-              # Point it at the same lualatex-via-latexmk rule instead, so
-              # texlab's build-on-save agrees with vimtex/<leader>ll and the
-              # declarative extra/latex/latexmkrc.
+              # Point it at the same lualatex-via-latexmk rule instead, so a
+              # manual :LspTexlabBuild agrees with vimtex and the declarative
+              # extra/latex/latexmkrc.
+              # onSave is OFF: vimtex's continuous latexmk (-pvc) already
+              # rebuilds on every write; a second latexmk from texlab races
+              # it on the same .aux/.bcf/.pdf and breaks the build.
               servers.texlab = {
                 enable = true;
                 settings = {
@@ -358,7 +361,7 @@
                     build = {
                       executable = "latexmk";
                       args = [ "-lualatex" "-interaction=nonstopmode" "-synctex=1" "%f" ];
-                      onSave = true;
+                      onSave = false;
                     };
                   };
                 };
