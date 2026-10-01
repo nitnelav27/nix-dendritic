@@ -9,7 +9,7 @@
       blueman
       calibre
       cmake
-      #emacs
+      emacs
       enchant
       electron
       feishin
@@ -50,7 +50,7 @@
       seahorse ## Graphical frontend fro GNOME Keyring
       slack
       slurp
-      #spotify
+      spotify
       sqlite
       #supersonic-wayland
       swaybg
@@ -58,7 +58,6 @@
       teams-for-linux 
       thunderbird
       via
-      vscode
       waybar
       wl-clipboard
       wlogout
