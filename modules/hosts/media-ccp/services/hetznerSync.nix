@@ -20,6 +20,8 @@
       stateDir = "/var/lib/hetzner-sync";
       keyFile = "/home/${user}/.ssh/id_ed25519";
       knownHosts = "${stateDir}/known_hosts";
+      ## ED25519 host key of the storage box (port 23), as accepted manually
+      hostKeyFp = "SHA256:XqONwb1S0zuj5A1CDxpOSuD2hnAArV1A3wKY7Z3sdgM";
 
       ## local path -> remote path (on the storage box)
       pairs = {
@@ -36,6 +38,7 @@
         port = 23
         key_file = ${keyFile}
         known_hosts_file = ${knownHosts}
+        host_key_algorithms = ssh-ed25519
         shell_type = unix
       '';
 
@@ -75,9 +78,17 @@
             echo "SSH key ${keyFile} missing or unreadable" >&2
             exit 1
           fi
-          ## Pin the storage box host key (TOFU on first run)
-          if [ ! -s "${knownHosts}" ]; then
-            ssh-keyscan -p 23 -t ed25519,rsa "${sbHost}" > "${knownHosts}"
+          ## Pin the storage box host key. rclone is restricted to ssh-ed25519
+          ## (host_key_algorithms) so Go's knownhosts can't negotiate another
+          ## key type and fail with "key mismatch". The scanned key must match
+          ## the pinned fingerprint, otherwise we refuse to write it.
+          if ! ssh-keygen -l -f "${knownHosts}" 2>/dev/null | grep -q "${hostKeyFp}"; then
+            ssh-keyscan -p 23 -t ed25519 "${sbHost}" > "${knownHosts}.tmp" 2>/dev/null
+            if ! ssh-keygen -l -f "${knownHosts}.tmp" 2>/dev/null | grep -q "${hostKeyFp}"; then
+              echo "host key of ${sbHost}:23 does not match ${hostKeyFp}" >&2
+              rm -f "${knownHosts}.tmp"; exit 1
+            fi
+            mv "${knownHosts}.tmp" "${knownHosts}"
           fi
 
           rc() { rclone --config "${rcloneConf}" "$@"; }
