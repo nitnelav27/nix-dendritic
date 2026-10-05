@@ -44,7 +44,7 @@
           user = "vvh";
           identityFile = "~/.ssh/id_ed25519";
         };
-        "nixos-vm" = {
+        "rpi-ccp" = {
           hostname = "10.27.115.3";
           port = 1186;
           user = "vvh";
