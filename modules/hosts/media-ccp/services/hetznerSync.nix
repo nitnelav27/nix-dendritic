@@ -56,10 +56,7 @@
         *.vrb
         .DS_Store
         ._*
-        ## git: unanchored patterns match at any depth, so these drop every
-        ## nested repo's .git dir, plus `.git` gitlink files (submodules/worktrees)
         .git/**
-        .git
         lost+found/**
       '';
 
