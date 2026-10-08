@@ -30,7 +30,10 @@
         "/storage/nas/results" = "/home/results";
       };
 
-      rcloneConf = pkgs.writeText "hetzner-rclone.conf" ''
+      ## Template only: copied into stateDir on every run, because rclone writes
+      ## auto-detected sftp settings back to its config and /nix/store is
+      ## read-only ("Failed to save config after 10 tries").
+      rcloneConfTemplate = pkgs.writeText "hetzner-rclone.conf" ''
         [${remoteName}]
         type = sftp
         host = ${sbHost}
@@ -40,6 +43,9 @@
         known_hosts_file = ${knownHosts}
         host_key_algorithms = ssh-ed25519
         shell_type = unix
+        ## No hash detection: we compare size,modtime only
+        md5sum_command = none
+        sha1sum_command = none
       '';
 
       excludeFile = pkgs.writeText "hetzner-sync-excludes" ''
@@ -68,11 +74,28 @@
 
       syncScript = pkgs.writeShellApplication {
         name = "hetzner-sync";
-        runtimeInputs = [ pkgs.rclone pkgs.coreutils pkgs.openssh ];
+        runtimeInputs = [ pkgs.rclone pkgs.coreutils pkgs.openssh pkgs.util-linux ];
         text = ''
           set -uo pipefail
           umask 077
           cd "${stateDir}" || exit 1
+
+          ## One run at a time (timer, manual `hetzner-sync`, ...). While we hold
+          ## this lock no other bisync can be running, so any leftover bisync
+          ## .lck file is from a run that was killed -- clear it.
+          exec 9>"${stateDir}/run.lock"
+          if ! flock -n 9; then
+            echo "another hetzner-sync run is in progress, exiting" >&2
+            exit 1
+          fi
+          for lck in "${stateDir}"/bisync/*.lck; do
+            [ -e "$lck" ] || continue
+            echo "removing stale bisync lock $lck"
+            rm -f "$lck"
+          done
+
+          rcloneConf="${stateDir}/rclone.conf"
+          install -m 600 "${rcloneConfTemplate}" "$rcloneConf"
 
           if [ ! -r "${keyFile}" ]; then
             echo "SSH key ${keyFile} missing or unreadable" >&2
@@ -91,7 +114,7 @@
             mv "${knownHosts}.tmp" "${knownHosts}"
           fi
 
-          rc() { rclone --config "${rcloneConf}" "$@"; }
+          rc() { rclone --config "$rcloneConf" "$@"; }
 
           failed=0
           for pair in ${pairList}; do
