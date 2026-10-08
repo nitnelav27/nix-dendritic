@@ -71,6 +71,7 @@
       cameractrls-gtk4
       v4l-utils
       guvcview
+      kdePackages.okular
       # (rstudioWrapper.override{
       #   packages = with rPackages; [
       #     ggplot2
