@@ -66,8 +66,11 @@
       thunar
       zathura
       zoom-us
-      #google-chrome
+      google-chrome
       claude-code
+      cameractrls-gtk4
+      v4l-utils
+      guvcview
       # (rstudioWrapper.override{
       #   packages = with rPackages; [
       #     ggplot2

@@ -39,6 +39,9 @@
         # Select the appropriate driver version for your GPU.
         package = config.boot.kernelPackages.nvidiaPackages.production;
       };
+      keyboard = {
+        qmk.enable = true;
+      };
     };
 
     boot = {
@@ -161,6 +164,7 @@
       timesyncd.enable = false;
       chrony.enable = true;
       printing.enable = true;
+      udev.packages = [ pkgs.via ];
     };
 
     networking = {
