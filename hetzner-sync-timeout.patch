@@ -1,0 +1,35 @@
+--- a/modules/hosts/media-ccp/services/hetznerSync.nix	2026-10-09 02:45:14.063065408 -0300
++++ b/modules/hosts/media-ccp/services/hetznerSync.nix	2026-10-09 02:45:14.066217435 -0300
+@@ -66,6 +66,12 @@
+         .DS_Store
+         ._*
+         .git/**
++        ## Rebuildable environments / caches
++        .venv/**
++        venv/**
++        node_modules/**
++        __pycache__/**
++        .ipynb_checkpoints/**
+         lost+found/**
+       '';
+ 
+@@ -145,6 +151,7 @@
+                 --max-delete 10 \
+                 --resilient \
+                 --recover \
++                --skip-links \
+                 "''${extra[@]}"; then
+               touch "$marker"
+               echo "[$name] OK"
+@@ -174,8 +181,9 @@
+           Group = group;
+           StateDirectory = "hetzner-sync";
+           StateDirectoryMode = "0700";
+-          ## Initial --resync of data/results can take a long time
+-          TimeoutStartSec = "6h";
++          ## A --resync of data/results can take many hours over SFTP; a start
++          ## timeout kills bisync mid-run and leaves stale lock files behind.
++          TimeoutStartSec = "infinity";
+           Nice = 10;
+           IOSchedulingClass = "idle";
+           ExecStart = "${syncScript}/bin/hetzner-sync";
