@@ -62,7 +62,7 @@
     # Code wrote in between rebuilds left alone. Once PR #9854 merges and this
     # host's home-manager input picks it up, replace this whole block with
     # `profiles.default.mutableUserSettings = true;` above.
-    home.file.".config/Code/User/settings.json".enable = lib.mkForce false;
+    home.file."${config.xdg.configHome}/Code/User/settings.json".enable = lib.mkForce false;
 
     home.activation.vscodeMutableSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       settingsFile="$HOME/.config/Code/User/settings.json"

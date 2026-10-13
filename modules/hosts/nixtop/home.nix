@@ -29,6 +29,7 @@
       self.homeModules.vvhHyprland
       self.homeModules.vvhHyprlock
       self.homeModules.vvhHypridle
+      self.homeModules.vvhClaudeDesktop
     ];
     
     home = {

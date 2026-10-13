@@ -84,6 +84,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    claude-desktop.url = "github:stslex/claude-desktop-nix";
+
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);

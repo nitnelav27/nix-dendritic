@@ -16,6 +16,7 @@
       self.nixosModules.mediaCCPArr 
       self.nixosModules.mediaCCPQbittorrent
       self.nixosModules.mediaCCPStreaming 
+      self.nixosModules.mediaCCPHetznerSync
     ];
 
     # Set your time zone.
