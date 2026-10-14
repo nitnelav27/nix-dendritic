@@ -42,7 +42,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # nix-homebrew's pinned brew lags homebrew-core; bump in lockstep with core.
+    brew-src = {
+      url = "github:Homebrew/brew/7.0.9";
+      flake = false;
+    };
+
+    nix-homebrew = {
+      url = "github:zhaofengli/nix-homebrew";
+      inputs.brew-src.follows = "brew-src";
+    };
 
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -59,7 +68,7 @@
       flake = false;
     };
 
-    mac-app-util.url = "github:hraban/mac-app-util";
+    #mac-app-util.url = "github:hraban/mac-app-util";
 
     nix-claude-code.url = "github:ryoppippi/nix-claude-code";
 

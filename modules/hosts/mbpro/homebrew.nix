@@ -4,6 +4,8 @@
 
     homebrew = {
       enable = true;
+      # Declare nix-homebrew's taps so `cleanup = "zap"` doesn't try to untap them.
+      taps = builtins.attrNames config.nix-homebrew.taps;
       casks = [
         "firefox"
         "kitty"

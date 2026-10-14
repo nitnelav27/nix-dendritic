@@ -3,7 +3,6 @@
   flake.homeModules.vvhMbpro = { pkgs, ... }: {
 
     imports = [
-      inputs.mac-app-util.homeManagerModules.default
       self.homeModules.vvhShell
       self.homeModules.vvhTerminals
       self.homeModules.vvhNvf
@@ -76,6 +75,13 @@
           target = ".config/figlet_fonts";
         };
       };
+    };
+
+    # Replaces mac-app-util: copies apps to ~/Applications/Home Manager Apps (Spotlight-indexable).
+    # linkApps defaults on for stateVersion < 25.11 and conflicts with copyApps.
+    targets.darwin = {
+      copyApps.enable = true;
+      linkApps.enable = false;
     };
 
     programs.home-manager.enable = true;
