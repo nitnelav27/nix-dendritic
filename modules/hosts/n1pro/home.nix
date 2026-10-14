@@ -17,6 +17,7 @@
       self.homeModules.vvhShell
       self.homeModules.vvhTerminals
       self.homeModules.vvhHomeBasePkgs
+      self.homeModules.vvhNvf
       self.homeModules.vvhGit
       self.homeModules.vvhYazi
       self.homeModules.vvhRofi

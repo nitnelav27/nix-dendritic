@@ -96,7 +96,7 @@
         ### AUTOSTART ###
         #################
         startup = [
-          { command = "waybar"; }
+            #{ command = "waybar"; }
           { command = "mako"; }
           { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
           { command = "wl-paste --type text --watch cliphist store"; }
