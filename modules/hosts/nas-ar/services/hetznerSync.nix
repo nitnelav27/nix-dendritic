@@ -1,0 +1,215 @@
+{ self, inputs, ... }: {
+
+  ## Two-way rclone bisync between nas-ar's /storage dirs and the Hetzner
+  ## Storage Box. Same remote paths as media-ccp (hetznerSync.nix there), so the
+  ## storage box acts as the hub: media-ccp <-> Hetzner <-> nas-ar. Each host
+  ## keeps its own bisync listings, so two spokes on one remote is fine as long
+  ## as they never run at the same time -- see the timer below.
+  ##
+  ## Runs as a *system* service (User=vvh) using vvh's key file directly, so
+  ## it does not depend on an ssh-agent / SSH_AUTH_SOCK being present -- this
+  ## is a headless box and nobody is logged in when the timer fires.
+  ## The key (~vvh/.ssh/id_ed25519) must be passphrase-less and its .pub
+  ## installed on the storage box.
+  ##
+  ## First run after rebuild (does --resync per pair):
+  ##   sudo systemctl start hetzner-sync
+  ##   journalctl -u hetzner-sync -f
+  flake.nixosModules.nasArHetznerSync = { config, lib, pkgs, ... }:
+    let
+      user = "vvh";
+      group = "vvh";
+      remoteName = "hetzner";
+      sbUser = "u664914";
+      sbHost = "${sbUser}.your-storagebox.de";
+      stateDir = "/var/lib/hetzner-sync";
+      keyFile = "/home/${user}/.ssh/id_ed25519";
+      knownHosts = "${stateDir}/known_hosts";
+      ## ED25519 host key of the storage box (port 23), as accepted manually
+      hostKeyFp = "SHA256:XqONwb1S0zuj5A1CDxpOSuD2hnAArV1A3wKY7Z3sdgM";
+
+      ## local path -> remote path (on the storage box)
+      pairs = {
+        "/storage/docs"    = "/home/docs";
+        "/storage/data"    = "/home/data";
+        "/storage/results" = "/home/results";
+      };
+
+      ## Template only: copied into stateDir on every run, because rclone writes
+      ## auto-detected sftp settings back to its config and /nix/store is
+      ## read-only ("Failed to save config after 10 tries").
+      rcloneConfTemplate = pkgs.writeText "hetzner-rclone.conf" ''
+        [${remoteName}]
+        type = sftp
+        host = ${sbHost}
+        user = ${sbUser}
+        port = 23
+        key_file = ${keyFile}
+        known_hosts_file = ${knownHosts}
+        host_key_algorithms = ssh-ed25519
+        shell_type = unix
+        ## No hash detection: we compare size,modtime only
+        md5sum_command = none
+        sha1sum_command = none
+      '';
+
+      excludeFile = pkgs.writeText "hetzner-sync-excludes" ''
+        *.aux
+        *.bbl
+        *.bcf
+        *.blg
+        *.fdb_latexmk
+        *.fls
+        *.log
+        *.nav
+        *.out
+        *.run.xml
+        *.snm
+        *.synctex.gz
+        *.toc
+        *.vrb
+        .DS_Store
+        ._*
+        .git/**
+        ## Rebuildable environments / caches
+        .venv/**
+        venv/**
+        node_modules/**
+        __pycache__/**
+        .ipynb_checkpoints/**
+        lost+found/**
+      '';
+
+      pairList = lib.concatMapStringsSep " " lib.escapeShellArg
+        (lib.mapAttrsToList (l: r: "${l}|${r}") pairs);
+
+      syncScript = pkgs.writeShellApplication {
+        name = "hetzner-sync";
+        runtimeInputs = [ pkgs.rclone pkgs.coreutils pkgs.openssh pkgs.util-linux ];
+        text = ''
+          set -uo pipefail
+          umask 077
+          cd "${stateDir}" || exit 1
+
+          ## One run at a time (timer, manual `hetzner-sync`, ...). While we hold
+          ## this lock no other bisync can be running, so any leftover bisync
+          ## .lck file is from a run that was killed -- clear it.
+          exec 9>"${stateDir}/run.lock"
+          if ! flock -n 9; then
+            echo "another hetzner-sync run is in progress, exiting" >&2
+            exit 1
+          fi
+          for lck in "${stateDir}"/bisync/*.lck; do
+            [ -e "$lck" ] || continue
+            echo "removing stale bisync lock $lck"
+            rm -f "$lck"
+          done
+
+          rcloneConf="${stateDir}/rclone.conf"
+          install -m 600 "${rcloneConfTemplate}" "$rcloneConf"
+
+          if [ ! -r "${keyFile}" ]; then
+            echo "SSH key ${keyFile} missing or unreadable" >&2
+            exit 1
+          fi
+          ## Pin the storage box host key. rclone is restricted to ssh-ed25519
+          ## (host_key_algorithms) so Go's knownhosts can't negotiate another
+          ## key type and fail with "key mismatch". The scanned key must match
+          ## the pinned fingerprint, otherwise we refuse to write it.
+          if ! ssh-keygen -l -f "${knownHosts}" 2>/dev/null | grep -q "${hostKeyFp}"; then
+            ssh-keyscan -p 23 -t ed25519 "${sbHost}" > "${knownHosts}.tmp" 2>/dev/null
+            if ! ssh-keygen -l -f "${knownHosts}.tmp" 2>/dev/null | grep -q "${hostKeyFp}"; then
+              echo "host key of ${sbHost}:23 does not match ${hostKeyFp}" >&2
+              rm -f "${knownHosts}.tmp"; exit 1
+            fi
+            mv "${knownHosts}.tmp" "${knownHosts}"
+          fi
+
+          rc() { rclone --config "$rcloneConf" "$@"; }
+
+          failed=0
+          for pair in ${pairList}; do
+            local_dir=''${pair%%|*}
+            remote=''${pair#*|}
+            name=$(basename "$local_dir")
+            marker="${stateDir}/.resynced-$name"
+            extra=()
+
+            if [ ! -d "$local_dir" ]; then
+              echo "[$name] local dir $local_dir missing, skipping"
+              failed=1; continue
+            fi
+
+            if [ ! -f "$marker" ]; then
+              echo "[$name] first run: creating remote dir and doing --resync"
+              rc mkdir "${remoteName}:$remote" || { failed=1; continue; }
+              ## The remote is already populated by media-ccp: on the initial
+              ## merge let the newer copy win instead of rclone's default
+              ## (path1 = local always wins), so stale local files on nas-ar
+              ## can't clobber newer ones already on the box.
+              extra+=(--resync --resync-mode newer)
+            fi
+
+            echo "[$name] bisync $local_dir <-> ${remoteName}:$remote"
+            if rc bisync "$local_dir" "${remoteName}:$remote" \
+                --workdir "${stateDir}/bisync" \
+                --exclude-from "${excludeFile}" \
+                --compare size,modtime \
+                --conflict-resolve newer \
+                --conflict-suffix conflict \
+                --max-delete 10 \
+                --resilient \
+                --recover \
+                --skip-links \
+                "''${extra[@]}"; then
+              touch "$marker"
+              echo "[$name] OK"
+            else
+              status=$?
+              echo "[$name] FAILED (exit $status)"
+              failed=1
+            fi
+          done
+
+          exit "$failed"
+        '';
+      };
+    in
+    {
+      environment.systemPackages = [ pkgs.rclone syncScript ];
+
+      systemd.services.hetzner-sync = {
+        description = "Bisync nas-ar /storage dirs with Hetzner Storage Box";
+        wants = [ "network-online.target" ];
+        after = [ "network-online.target" ];
+        unitConfig.RequiresMountsFor = builtins.attrNames pairs;
+        restartIfChanged = false;
+        serviceConfig = {
+          Type = "oneshot";
+          User = user;
+          Group = group;
+          StateDirectory = "hetzner-sync";
+          StateDirectoryMode = "0700";
+          ## A --resync of data/results can take many hours over SFTP; a start
+          ## timeout kills bisync mid-run and leaves stale lock files behind.
+          TimeoutStartSec = "infinity";
+          Nice = 10;
+          IOSchedulingClass = "idle";
+          ExecStart = "${syncScript}/bin/hetzner-sync";
+        };
+      };
+
+      systemd.timers.hetzner-sync = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          ## media-ccp fires at 01:00 America/Santiago, which is the same
+          ## instant as 01:00 Buenos Aires for most of the year. Concurrent
+          ## bisyncs from two hosts against the same remote paths can race
+          ## (each sees the other's half-written changes as deltas), so stay
+          ## well clear of it.
+          OnCalendar = "*-*-* 04:00:00";  ## daily at 4 AM (America/Argentina/Buenos_Aires)
+          Persistent = true;
+        };
+      };
+    };
+}

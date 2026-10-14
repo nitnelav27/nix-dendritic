@@ -17,6 +17,7 @@
       self.nixosModules.nasArQbittorrent
       self.nixosModules.nasArGraphics
       self.nixosModules.nasArStreaming
+      self.nixosModules.nasArHetznerSync
     ];
 
     time.timeZone = "America/Argentina/Buenos_Aires";
