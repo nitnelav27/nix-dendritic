@@ -33,6 +33,7 @@
       self.homeModules.utdt10141Solaar
       self.homeModules.vvhEmacs
       self.homeModules.utdt10141HetznerSync
+      self.homeModules.utdt10141SSH
     ];
 
     targets.genericLinux = {

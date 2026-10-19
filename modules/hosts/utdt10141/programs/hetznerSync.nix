@@ -12,10 +12,10 @@
       rcloneConfTemplate = pkgs.writeText "hetzner-rclone.conf" ''
         [${remoteName}]
         type = sftp
-        host = u664914.your-storagebox.de
-        user = u664914
-        port = 23
-        key_use_agent = true
+        ## Delegate the transport to the external ssh client so the sync uses
+        ## the exact same Host block (storagebox) as interactive `ssh`.
+        ## host/user/port/key settings are ignored by rclone when `ssh` is set.
+        ssh = ssh storagebox
         shell_type = unix
       '';
 
@@ -40,7 +40,7 @@
 
       syncScript = pkgs.writeShellApplication {
         name = "hetzner-sync";
-        runtimeInputs = [ pkgs.rclone pkgs.coreutils pkgs.findutils ];
+        runtimeInputs = [ pkgs.rclone pkgs.openssh pkgs.coreutils pkgs.findutils ];
         text = ''
           set -uo pipefail
           mkdir -p "${stateDir}"
