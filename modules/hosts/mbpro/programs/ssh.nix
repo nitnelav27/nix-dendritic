@@ -4,9 +4,11 @@
 
     programs.ssh = {
       enable = true;
-      addKeysToAgent = "yes";
-      controlMaster = "auto";
-      controlPersist = "10m";
+      settings."*" = {
+        AddKeysToAgent = "yes";
+        ControlMaster = "auto";
+        ControlPersist = "10m";
+      };
       matchBlocks = {
         "*" = {
           setEnv = {

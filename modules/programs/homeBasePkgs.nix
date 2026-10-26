@@ -51,7 +51,7 @@
       ### End of fonts
     ]
     # Logic: Only add nixfmt if we are NOT on Darwin
-    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+    ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
         nixfmt
         cliphist
     ];

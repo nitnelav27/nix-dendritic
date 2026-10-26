@@ -2,7 +2,7 @@
 
   flake.homeModules.vvhNvf = { config, pkgs, lib, ... }:
     let
-      nixFormatter = if pkgs.stdenv.isDarwin then "alejandra" else "nixfmt";
+      nixFormatter = if pkgs.stdenv.hostPlatform.isDarwin then "alejandra" else "nixfmt";
     in
     {
       imports = [ inputs.nvf.homeManagerModules.default ];
@@ -13,7 +13,7 @@
           vim = {
             globals = {
               mapleader = " ";
-              vimtex_view_method = if pkgs.stdenv.isDarwin then "skim" else "zathura";
+              vimtex_view_method = if pkgs.stdenv.hostPlatform.isDarwin then "skim" else "zathura";
               vimtex_compiler_method = "latexmk";
               # Engine (lualatex) comes from $pdf_mode = 4 in ~/.latexmkrc.
               # Uses ~/.latexmkrc (declaratively managed, see
@@ -33,7 +33,7 @@
             };
             clipboard = {
               enable = true;
-              providers.wl-copy.enable = pkgs.stdenv.isLinux;
+              providers.wl-copy.enable = pkgs.stdenv.hostPlatform.isLinux;
               registers = "unnamedplus";
             };
             theme = {
@@ -404,7 +404,7 @@
                 enable = true;
                 format.enable = true;
                 lsp = {
-                  enable = !pkgs.stdenv.isDarwin;
+                  enable = !pkgs.stdenv.hostPlatform.isDarwin;
                 };
                 extensions = {
                   markview-nvim.enable = true;
