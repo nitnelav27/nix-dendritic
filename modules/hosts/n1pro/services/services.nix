@@ -28,6 +28,14 @@
       udisks2.enable = true;
       avahi.enable = true;
       printing.enable = false;
+
+      forticlient = {
+        enable = true;
+        package = inputs.forticlient-nixos.packages.x86_64-linux.forticlient.override {
+          version = "7.4.8.1904";   # match what EMS expects; module pins 7.4.7.1868
+          sha256 = "…";             # nix-prefetch-url <deb from repo.fortinet.com>
+        };
+      };
     };
 
     ## Uncomment if this particular N1 Pro unit has a Wi-Fi/Bluetooth module --

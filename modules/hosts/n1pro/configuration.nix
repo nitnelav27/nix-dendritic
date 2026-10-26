@@ -4,6 +4,7 @@
 
     imports = [
       inputs.agenix.nixosModules.default
+      inputs.forticlient-nixos.nixosModules.forticlient
       self.nixosModules.n1proHardware
       self.nixosModules.commonServices 
       self.nixosModules.commonConfig
