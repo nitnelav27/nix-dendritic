@@ -33,7 +33,7 @@
         enable = true;
         package = inputs.forticlient-nixos.packages.x86_64-linux.forticlient.override {
           version = "7.4.8.1904";   # match what EMS expects; module pins 7.4.7.1868
-          sha256 = "…";             # nix-prefetch-url <deb from repo.fortinet.com>
+          sha256 = "sha256-j5OcQunefHIyUSdyMNqRO584+TrSolNaPr134Tm/7YE=";             # nix-prefetch-url <deb from repo.fortinet.com>
         };
       };
     };
