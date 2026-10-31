@@ -9,6 +9,7 @@
       self.nixosModules.commonServices 
       self.nixosModules.commonConfig
       self.nixosModules.n1proServices
+      self.nixosModules.niriN1pro # niri session next to sway; config in modules/programs/niri.nix
     ];
 
     time.timeZone = "America/Argentina/Buenos_Aires";
@@ -46,9 +47,10 @@
     ###################
     ### WM + SESSION ###
     ###################
-    ## The actual Sway config (keybinds, bar, idle/lock) lives in the
-    ## home-manager module modules/programs/sway.nix (flake.homeModules.vvhSway).
-    ## This just installs the system-wide sway + registers it as a session.
+    ## The actual Sway config lives in the home-manager module
+    ## modules/hosts/n1pro/programs/sway.nix (flake.homeModules.vvhSway); bar,
+    ## idle/lock etc. in waylandDesktop.nix. niri comes in via
+    ## nixosModules.niriN1pro. This just installs sway + registers its session.
     programs = {
       zsh.enable = true;
       sway = {
@@ -82,18 +84,26 @@
     ## If you'd rather match nixtop's SDDM+GNOME session-picker look across
     ## machines, swap this block for `self.nixosModules.vvhGnome` in the
     ## imports above and drop `services.greetd` here.
+    ##
+    ## Sessions come from the registered wayland-sessions (sway + niri): F3 in
+    ## tuigreet picks one, --remember-session keeps the last choice, and
+    ## --cmd is only the fallback before anything has been remembered.
     services.greetd = {
       enable = true;
       useTextGreeter = true;
-      settings.default_session.command =
-        "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --cmd sway";
+      settings.default_session.command = lib.concatStringsSep " " [
+        "${pkgs.tuigreet}/bin/tuigreet"
+        "--time --remember --remember-session --asterisks"
+        "--sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions"
+        "--cmd niri-session"
+      ];
     };
 
     services.gnome.gnome-keyring.enable = true; # just the keyring daemon, not the shell
 
     xdg.portal = {
       enable = true;
-      wlr.enable = true; # screen share / screenshot portal for sway
+      wlr.enable = true; # screen share / screenshot portal for sway (niri's module adds its own gnome portal)
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # file picker etc.
     };
 

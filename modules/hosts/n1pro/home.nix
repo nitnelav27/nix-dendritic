@@ -23,6 +23,7 @@
       self.homeModules.vvhRofi
       self.homeModules.vvhMediaPlayers
       self.homeModules.vvhSway
+      self.homeModules.n1proWaylandDesktop # waybar/fuzzel/mako/swayidle, shared by sway + niri
       self.homeModules.n1proHomePkgs
       # self.homeModules.vvhVSCode      # uncomment if you end up doing dev work on this box
     ];
