@@ -45,5 +45,29 @@
     # services.blueman.enable = true;
 
     boot.kernelPackages = pkgs.linuxPackages_latest;
+
+    ## forticlient-nixos still lists `xorg.libX11` & co. for nix-ld, and every
+    ## one of those trips nixpkgs' "xorg package set has been deprecated"
+    ## warning. Point the old names at the new top-level packages so the
+    ## warnings never fire. Drop this once upstream switches to the new names.
+    nixpkgs.overlays = [
+      (final: prev: {
+        xorg = prev.xorg // {
+          libX11 = final.libx11;
+          libxcb = final.libxcb;
+          libXcomposite = final.libxcomposite;
+          libXcursor = final.libxcursor;
+          libXdamage = final.libxdamage;
+          libXext = final.libxext;
+          libXfixes = final.libxfixes;
+          libXi = final.libxi;
+          libXrandr = final.libxrandr;
+          libXrender = final.libxrender;
+          libXScrnSaver = final.libxscrnsaver;
+          libXtst = final.libxtst;
+          libxshmfence = final.libxshmfence;
+        };
+      })
+    ];
   };
 }

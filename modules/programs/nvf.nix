@@ -73,7 +73,6 @@
             };
             startPlugins = [
               "obsidian-nvim"
-              "nvim-colorizer-lua"
               "blink-cmp"
               "catppuccin"
               "dressing-nvim"
@@ -314,11 +313,13 @@
                   };
                 };
               };
-              breadcrumbs.enable = true;
               illuminate.enable = true;
               smartcolumn.enable = true;
             };
-            statusline.lualine.enable = true;
+            statusline.lualine = {
+              enable = true;
+              integrations.breadcrumbs.nvim-navic.enable = true; # was ui.breadcrumbs.enable
+            };
             telescope.enable = true;
             fzf-lua.enable = true;
             filetree = {

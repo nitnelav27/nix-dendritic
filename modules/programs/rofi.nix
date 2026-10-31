@@ -5,10 +5,10 @@
     programs.rofi = {
       enable = true;
       package = pkgs.rofi;
-      cycle = true;
-      font = "Fira Sans 15";
       theme = ./rofi-launcher-theme.rasi;
-      extraConfig = {
+      settings = {
+        cycle = true;
+        font = "Fira Sans 15";
         modi = "drun,filebrowser,window,run";
         show-icons = true;
         icon-theme = "Paper";
