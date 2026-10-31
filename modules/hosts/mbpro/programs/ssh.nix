@@ -32,8 +32,8 @@
           user = "vsvh";
           identityFile = "~/.ssh/id_ed25519";
         };
-        "nixos-vm" = {
-          hostname = "10.27.115.3";
+        "n1pro" = {
+          hostname = "10.27.81.138";
           port = 1186;
           user = "vvh";
           identityFile = "~/.ssh/id_ed25519";
