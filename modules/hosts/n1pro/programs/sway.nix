@@ -8,6 +8,7 @@
   flake.homeModules.vvhSway = { config, lib, pkgs, ... }:
     let
       mod = "Mod4"; # SUPER, matches $mainMod on hyprland and Mod on niri
+      theme = self.lib.n1proTheme pkgs; # same wallpaper/palette as the niri session
     in {
 
     wayland.windowManager.sway = {
@@ -69,11 +70,25 @@
         };
 
         output = {
-          ## Solid colour instead of an image: zero decode cost on the N150's
-          ## iGPU. Point this at a file (e.g. "~/pix/wall.png fill") if you'd
-          ## rather have a real wallpaper -- just know it's not "free".
           "*" = {
-            bg = "#1d2021 solid_color";
+            bg = "${theme.wallpaper} fill";
+          };
+        };
+
+        colors = {
+          focused = {
+            border = theme.colors.primary;
+            background = theme.colors.primary;
+            text = theme.colors.on_primary;
+            indicator = theme.colors.tertiary;
+            childBorder = theme.colors.primary;
+          };
+          unfocused = {
+            border = theme.colors.outline_variant;
+            background = theme.colors.surface;
+            text = theme.colors.on_surface_variant;
+            indicator = theme.colors.outline_variant;
+            childBorder = theme.colors.outline_variant;
           };
         };
 
@@ -88,6 +103,8 @@
           "${mod}+q" = "kill";
           "${mod}+Shift+f" = "floating toggle";
           "${mod}+Shift+e" = "exec thunar";
+          "${mod}+Ctrl+v" = "exec clipboard-menu"; # same as niri / daru
+          "Mod1+x" = "exec power-menu";            # Alt+X, same as niri / daru
           "${mod}+Shift+p" =
             ''exec grim -g "$(slurp)" "$HOME/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png"'';
         };

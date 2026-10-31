@@ -111,7 +111,20 @@
       };
     };
 
-    packages.vvhNiriN1pro = inputs.wrapper-modules.wrappers.niri.wrap {
+    packages.vvhNiriN1pro =
+      let
+        ## n1pro palette (modules/hosts/n1pro/programs/theme.nix, Nord),
+        ## shared with waybar/fuzzel/mako/swaylock/ghostty.
+        theme = self.lib.n1proTheme pkgs;
+        c = theme.colors;
+
+        ## Frosted glass behind the shell, as in daru's niri-layer-rules.kdl.
+        ## xray blur only samples the wallpaper, so it is cheap on the N150.
+        glass = { blur = true; xray = true; noise = 0.02; saturation = 1.4; };
+
+        fuzzel = lib.getExe pkgs.fuzzel;
+      in
+      inputs.wrapper-modules.wrappers.niri.wrap {
       inherit pkgs;
       settings = lib.recursiveUpdate base {
         ## waybar, swayidle and cliphist are systemd user services bound to
@@ -119,7 +132,7 @@
         ## polkit agent is too -- see homeModules.n1proWaylandDesktop. Only
         ## things without a unit get spawned here.
         spawn-at-startup = [
-          [ (lib.getExe pkgs.swaybg) "-c" "#1d2021" ] # solid colour, same as the sway session
+          [ (lib.getExe pkgs.swaybg) "-i" "${theme.wallpaper}" "-m" "fill" ]
           (lib.getExe pkgs.mako)
         ];
 
@@ -130,8 +143,47 @@
         ## one, and niri moves them back when it reconnects.
         workspaces = lib.genAttrs workspaceNames (_: _: {});
 
+        prefer-no-csd = true;
+
+        layout = {
+          focus-ring = {
+            width = 2;
+            active-color = c.primary;
+            inactive-color = c.outline_variant;
+          };
+          border.off = _: {};
+        };
+
+        overview.backdrop-color = c.surface_container_lowest;
+
+        blur = {
+          passes = 2; # default 3; one less pass for the N150's iGPU
+          offset = 3;
+        };
+
+        ## Rounded, clipped windows like daru's screenshots.
+        window-rules = [
+          {
+            geometry-corner-radius = 8;
+            clip-to-geometry = true;
+          }
+        ];
+
+        layer-rules = [
+          { matches = [ { namespace = "^waybar$"; } ];        background-effect = glass; }
+          { matches = [ { namespace = "^launcher$"; } ];      background-effect = glass; geometry-corner-radius = 8; }
+          { matches = [ { namespace = "^notifications$"; } ]; background-effect = glass; geometry-corner-radius = 8; }
+        ];
+
         binds = {
-          "Mod+Space".spawn = [ (lib.getExe pkgs.fuzzel) ];
+          "Mod+Space".spawn = [ fuzzel ];
+
+          ## daru's dropdowns, mapped onto fuzzel / mako. power-menu and
+          ## clipboard-menu come from homeModules.n1proWaylandDesktop.
+          "Mod+Ctrl+V".spawn = [ "clipboard-menu" ];
+          "Alt+X".spawn = [ "power-menu" ];
+          "Mod+Shift+N".spawn-sh = "makoctl restore";                     # reopen last notification
+          "Mod+Ctrl+N".spawn-sh = "makoctl mode -t do-not-disturb && pkill -RTMIN+8 waybar"; # "Quiet"
 
           ## Things Noctalia provides on nixtop, done by hand here.
           "Mod+Alt+L".spawn-sh = "swaylock -f";
