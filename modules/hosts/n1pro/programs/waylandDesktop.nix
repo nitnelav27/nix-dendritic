@@ -456,6 +456,24 @@
       clipboardMenu
     ];
 
+    ## URL-scheme / default-app routing. Without a desktop environment
+    ## nothing registers handlers, so after the browser sign-in the
+    ## claude:// callback had nowhere to go and Claude Desktop never heard
+    ## back. Declared here instead of letting the app write mimeapps.list
+    ## itself (it can't: home-manager owns the file).
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "x-scheme-handler/claude" = "com.anthropic.Claude.desktop";
+        "x-scheme-handler/http" = "firefox.desktop";
+        "x-scheme-handler/https" = "firefox.desktop";
+        "text/html" = "firefox.desktop";
+      };
+    };
+    ## Replace any mimeapps.list an app already wrote instead of failing
+    ## activation with "would be clobbered".
+    xdg.configFile."mimeapps.list".force = true;
+
     home.pointerCursor = {
       enable = true;
       gtk.enable = true;
