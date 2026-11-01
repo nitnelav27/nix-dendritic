@@ -93,7 +93,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-desktop.url = "github:stslex/claude-desktop-nix";
+    claude-desktop = {
+      url = "github:stslex/claude-desktop-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     ## forticlient testing
     forticlient-nixos.url = "github:jplana/forticlient-nixos";

@@ -6,7 +6,7 @@
   ## pointing at nas-ar's IP.
   flake.nixosModules.nasArNfs = { config, lib, pkgs, ... }:
     let
-      clients = "10.27.81.81/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check) 10.27.81.82/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check)";
+      clients = "10.27.81.81/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check) 10.27.81.82/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check) 10.27.81.138/32(insecure,rw,no_subtree_check)";
     in
     {
       services.nfs = {
@@ -21,7 +21,7 @@
           mountdPort = 4002;
           statdPort = 4000;
           exports = ''
-            /export          10.27.81.81/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check,fsid=0) 10.27.81.82/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check,fsid=0)
+            /export          10.27.81.81/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check,fsid=0) 10.27.81.82/32(insecure,rw,sync,all_squash,anonuid=1000,anongid=1000,no_subtree_check,fsid=0) 10.27.81.138/32(insecure,rw,no_subtree_check,fsid=0)
             /export/.decreto   ${clients}
             /export/data  ${clients}
             /export/docs  ${clients}
