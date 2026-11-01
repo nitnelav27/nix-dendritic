@@ -10,6 +10,7 @@
       self.nixosModules.commonConfig
       self.nixosModules.n1proServices
       self.nixosModules.niriN1pro # niri session next to sway; config in modules/programs/niri.nix
+      self.nixosModules.n1ProMounts
     ];
 
     time.timeZone = "America/Argentina/Buenos_Aires";

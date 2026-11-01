@@ -33,11 +33,11 @@
           fsType = "nfs";
           options = commonOpts;
         };
-        "${HOME}/nas/migration" = {
-          device = "${nasLocation}:/migration";
-          fsType = "nfs";
-          options = commonOpts;
-        };
+        # "${HOME}/nas/migration" = {
+        #   device = "${nasLocation}:/migration";
+        #   fsType = "nfs";
+        #   options = commonOpts;
+        # };
         "${HOME}/docs" = {
           device = "${nasLocation}:/docs";
           fsType = "nfs";
