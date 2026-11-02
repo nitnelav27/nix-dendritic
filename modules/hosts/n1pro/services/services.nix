@@ -4,9 +4,29 @@
 
     networking = {
       hostName = "n1pro";
-      networkmanager.enable = true;
-      # Static DNS/timeserver overrides like nixtop's aren't needed here yet --
-      # add them if n1pro moves to a fixed LAN IP.
+      ## Static IP on the wired NIC, still managed by NetworkManager (FortiClient
+      ## and Wi-Fi keep working). 10.27.81.138 must match the NFS allowlist on
+      ## nas-ar/rpi-ar (modules/hosts/{nas-ar,rpi-ar}/services/nfs.nix) and
+      ## mbpro's ssh alias for n1pro.
+      networkmanager = {
+        enable = true;
+        ensureProfiles.profiles."enp4s0-static" = {
+          connection = {
+            id = "enp4s0-static";
+            type = "ethernet";
+            interface-name = "enp4s0";
+            autoconnect = true;
+            autoconnect-priority = 100; # win over NM's auto "Wired connection 1" (DHCP)
+          };
+          ipv4 = {
+            method = "manual";
+            address1 = "10.27.81.138/24,10.27.81.1";
+            dns = "10.27.81.1;";
+            ignore-auto-dns = true;
+          };
+          ipv6.method = "auto";
+        };
+      };
     };
 
     services = {

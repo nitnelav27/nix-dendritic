@@ -2,7 +2,7 @@
 
   flake.nixosModules.n1ProMounts = { config, lib, pkgs, ... }:
     let
-      HOME = "/home/vsvh";
+      HOME = config.users.users.vvh.home; ## n1pro's user is vvh, not nixtop's vsvh
       nasLocation = "10.27.81.4";
       commonOpts = [
         "nfsvers=4.2"
