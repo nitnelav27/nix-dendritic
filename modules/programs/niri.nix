@@ -107,7 +107,7 @@
           "06terms" = { open-on-output = "DP-2"; };
         };
 
-        binds."Mod+Space".spawn-sh = "${lib.getExe self'.packages.vvhNoctalia} ipc call launcher toggle";
+        binds."Mod+Space".spawn-sh = "${lib.getExe self'.packages.vvhNoctalia} msg panel-toggle launcher";
       };
     };
 

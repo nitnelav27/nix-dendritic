@@ -1,0 +1,113 @@
+# Noctalia v5 config for nixtop, ported from the v4 noctalia.json.
+# Read by modules/programs/noctalia.nix (builtins.fromTOML) and written to
+# $NOCTALIA_CONFIG_HOME/noctalia/settings.toml by the wrapper. Only non-default
+# values are set; see `example.toml` in the noctalia source for everything else.
+# Changes made in the Settings window land in ~/.local/state/noctalia/settings.toml
+# and override this file; copy them back here to make them permanent.
+
+[shell]
+font_family = "Fira Sans"
+avatar_path = "/home/vsvh/dump/Photo-on-4-29-24-at-13.28-2.jpg"
+telemetry_enabled = false
+clipboard_enabled = false            # v4: enableClipboardHistory = false
+
+[shell.launcher]
+sort_by_usage = true
+
+[shell.shadow]
+direction = "down_right"             # v4: shadowDirection = bottom_right
+
+# ── Theme ─────────────────────────────────────────────────────────────────────
+[theme]
+mode = "dark"
+source = "builtin"
+builtin = "Nord"
+
+# ── Wallpaper ─────────────────────────────────────────────────────────────────
+[wallpaper]
+enabled = true
+directory = "/home/vsvh/pix/wp2"
+fill_mode = "crop"
+transition = ["fade", "disc", "stripes", "wipe", "pixel", "honeycomb"]
+transition_duration = 1500
+edge_smoothness = 0.05
+transition_on_startup = true         # v4: skipStartupTransition = false
+
+[wallpaper.default]
+path = "/home/vsvh/pix/wp2/riverforest.jpg"
+
+# ── Notifications / OSD ───────────────────────────────────────────────────────
+[notification]
+layer = "overlay"                    # v4: overlayLayer = true
+background_opacity = 1.0
+
+[osd]
+position = "top_right"
+hide_delay_ms = 2000
+background_opacity = 1.0
+
+# ── Lock screen ───────────────────────────────────────────────────────────────
+[lockscreen]
+lock_before_suspend = true           # v4: lockOnSuspend = true
+blur_intensity = 0.0                 # v4: lockScreenBlur = 0
+tint_intensity = 0.0                 # v4: lockScreenTint = 0
+
+[bluetooth]
+connect_when_enabled = true          # v4: bluetoothAutoConnect = true
+
+# ── Bar ───────────────────────────────────────────────────────────────────────
+# v4: floating top bar, 4px margins, capsules, 0.93 opacity.
+[bar.main]
+position = "top"
+background_opacity = 0.93
+radius = 12
+margin_ends = 4
+margin_edge = 4
+widget_spacing = 6
+capsule = true
+
+start  = ["launcher", "clock", "cpu", "cpu_temp", "ram", "active_window", "media"]
+center = ["workspaces"]
+end    = ["tray", "notifications", "battery", "volume", "brightness", "control-center"]
+
+[widget.clock]
+format = "{:%H:%M %a, %b %d}"        # v4: "HH:mm ddd, MMM dd"
+tooltip_format = "{:%H:%M %a, %b %d}"
+
+# v4 had one SystemMonitor widget; v5 uses one sysmon instance per stat.
+[widget.cpu]
+type = "sysmon"
+stat = "cpu_usage"
+
+[widget.cpu_temp]
+type = "sysmon"
+stat = "cpu_temp"
+
+[widget.ram]
+type = "sysmon"
+stat = "ram_used"
+
+[widget.active_window]
+max_length = 145
+title_scroll = "on_hover"
+
+[widget.media]
+artist_first = true
+max_length = 145
+title_scroll = "on_hover"
+hide_when_no_media = true            # v4: hideMode = hidden
+
+[widget.workspaces]
+show_labels = true
+label_source = "id"                  # v4: labelMode = index
+labels_only_when_occupied = true
+
+[widget.tray]
+drawer = true
+
+# v4 showed these labels only on hover; v5 has no hover mode, so icon only.
+[widget.volume]
+show_label = false
+
+[widget.brightness]
+show_label = false

@@ -20,6 +20,7 @@
 
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";

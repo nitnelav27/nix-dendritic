@@ -30,6 +30,7 @@
       self.homeModules.vvhHyprlock
       self.homeModules.vvhHypridle
       self.homeModules.vvhClaudeDesktop
+      self.homeModules.nixtopSway
     ];
     
     home = {

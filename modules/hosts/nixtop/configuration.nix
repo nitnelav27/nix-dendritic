@@ -11,6 +11,7 @@
       self.nixosModules.nixtopMounts
       self.nixosModules.vvhGnome
       self.nixosModules.niri
+      self.nixosModules.nixtopSway # sway session next to niri; programs/sway.nix
     ];
 
     # Activate swap
