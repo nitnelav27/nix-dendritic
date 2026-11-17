@@ -27,19 +27,20 @@
       self.homeModules.vvhYazi
       self.homeModules.vvhGit
       self.homeModules.utdt10141HomePkgs
-      self.homeModules.vvhVSCode
+      #self.homeModules.vvhVSCode
       self.homeModules.vvhDirenv
       self.homeModules.utdt10141GnomeConfig
       self.homeModules.utdt10141Solaar
-      self.homeModules.vvhEmacs
+      #self.homeModules.vvhEmacs
       self.homeModules.utdt10141HetznerSync
       self.homeModules.utdt10141SSH
     ];
 
-    targets.genericLinux = {
-      enable = true;
-      nixGL.packages = inputs.nixgl.packages;
-    };
+    ## GPU drivers for Nix apps on Ubuntu via HM's built-in support
+    ## (replaces nixGL). `targets.genericLinux.gpu.enable` defaults to true
+    ## here; config.lib.nixGL.wrap becomes a no-op. After a switch that
+    ## changes mesa, run once:  sudo $(which non-nixos-gpu-setup)
+    targets.genericLinux.enable = true;
 
     home = {
       stateVersion = "25.05";

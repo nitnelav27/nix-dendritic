@@ -72,6 +72,7 @@
       nerd-fonts.symbols-only
       ### End of fonts
       texliveFullWithDocs
+      sqlite
     ];
 
     ## sioyek used to be the default PDF handler; it's gone from Nix now
