@@ -5,7 +5,7 @@
       nixFormatter = if pkgs.stdenv.hostPlatform.isDarwin then "alejandra" else "nixfmt";
     in
     {
-      imports = [ inputs.nvf.homeManagerModules.default ];
+      imports = [ inputs.nvf.homeModules.default ];
       programs.nvf = {
         enable = true;
         enableManpages = true;

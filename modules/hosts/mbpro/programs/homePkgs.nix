@@ -13,7 +13,7 @@
       jq
       alejandra
       texlab
-      windsurf
+      # windsurf  # 2026-11: renamed devin-desktop in nixpkgs; upstream zip 404s
       wget
       claude-code
       postgresql

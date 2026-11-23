@@ -45,7 +45,7 @@
 
     # nix-homebrew's pinned brew lags homebrew-core; bump in lockstep with core.
     brew-src = {
-      url = "github:Homebrew/brew/7.0.11";
+      url = "github:Homebrew/brew/7.0.16";
       flake = false;
     };
 

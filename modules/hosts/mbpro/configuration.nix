@@ -23,6 +23,13 @@
     ## downloading the prebuilt kernel/packages.
     nix.settings.trusted-users = [ "root" "vvh" ];
 
+    ## GitHub token for flake fetches (unauthenticated API: 60 req/h).
+    ## Kept out of the store; `!include` silently skips the file if missing.
+    ## File contents: access-tokens = github.com=<token>
+    nix.extraOptions = ''
+      !include /Users/vvh/.config/nix/access-tokens.conf
+    '';
+
     ## Local aarch64-linux builder VM, used to build things like the rpi-ar
     ## installer sd-image without needing a remote/emulated builder.
     ## Temporarily disabled 2026-09-13: virtiofsd's libseccomp dependency
